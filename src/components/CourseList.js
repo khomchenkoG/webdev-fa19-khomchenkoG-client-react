@@ -1,16 +1,12 @@
 import React from 'react'
 import CourseRow from "./CourseRow";
+import Courses from '../services/Courses';
 
-const courses = [
-    { title: 'Course 1', seats: 123, id: 1 },
-    { title: 'Course 2', seats: 234, id: 2 },
-    { title: 'Course 3', seats: 345, id: 3 },
-    { title: 'Course 4', seats: 456, id: 4 },
-    { title: 'Course 5', seats: 567, id: 5 },
-]
 
-const CourseList = () =>
-    <div class="table-container">
+export default class CourseList extends React.Component {
+    render () {
+        return (
+            <div class="table-container">
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -27,24 +23,19 @@ const CourseList = () =>
                 </tr>
             </thead>
             <tbody class = "table-body">
+
                 {
-                    courses.map(course =>
+                    Courses.map(course =>
+
                         <CourseRow
-                            key={course.id}
-                            title={course.title}
-                            seats={course.seats}/>
+                            course={course}/>
                     )
-                }
-                {
-                    courses.map(function (course, index) {
-                        return <CourseRow
-                            key={course.id}
-                            title={course.title}
-                            seats={course.seats}/>
-                    })
                 }
             </tbody>
         </table>
     </div>
+            )
+    }
+}
+    
 
-export default CourseList
