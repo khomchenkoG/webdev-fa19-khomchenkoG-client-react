@@ -32,8 +32,12 @@ export default class CourseService {
         this.courses = this.courses.filter(course => course.id !== courseId)
     }
 
-    updateCourse(courseId, course) {
-        // ...
+    updateCourse(courseId, courseToUpdate) {
+        for (let i=0; i < this.courses.length; i++){
+            if(this.courses[i].id == courseId){
+                this.courses[i] = courseToUpdate
+            }
+        }
     }
 
 }

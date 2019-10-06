@@ -49,8 +49,8 @@ export default class CourseList extends React.Component {
             }))
         }
 
-        deleteCourse = (courseToDelete) => {
-            courseService.deleteCourse(courseToDelete.id);
+        deleteCourse = (id) => {
+            courseService.deleteCourse(id);
             this.setState(prevState => ({
                 newCourse: prevState.newCourse,
                 currentView: prevState.currentView,

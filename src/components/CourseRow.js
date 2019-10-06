@@ -5,6 +5,7 @@ import { FaTimes } from 'react-icons/fa';
 import CourseEditor from '../Containers/CourseEditor';
 
 const CourseRow = ({ course, callback }) =>
+
     <tr class="wbdv-row wbdv-course">
         <td scope="row">
         <FaFileAlt/>
@@ -20,7 +21,8 @@ const CourseRow = ({ course, callback }) =>
         <td></td>
         <td></td>
         <td>
-        <button onClick={callback.bind(this, {course})}> <FaTimes/> </button>
+        <button onClick={callback.bind(this, course.id)}> <FaTimes/> </button>
         </td>
         </tr>
+
 export default CourseRow;
