@@ -1,0 +1,99 @@
+
+.mudule-lst{
+	height: 100vh; 
+	background:none;
+}
+
+.wbdv-module-item {
+	display: block; 
+	background: #C8C8C8; 
+	margin-top: 10px; 
+	border-radius: 10px;
+	text-align: center;
+}
+
+.lesson-tab {
+	display: block; 
+	background: #DEEFFE; 
+	margin-top: 10px; 
+	margin-left: 10px;
+	border-radius: 10px;
+}
+
+.topic-tab {
+	display: block; 
+	background: #0059A7; 
+	margin-top: 10px; 
+	margin-left: 10px;
+	color: white;
+}
+
+.wbdv-module-item-active {
+	display: block; 
+	background: #FEAD0A; 
+	margin-top: 10px; 
+	border-radius: 10px;
+
+}
+
+.active {
+	background: red;
+}
+
+.take-full-width{
+	width:100%;
+}
+
+.take-full-height{
+	height:100%;
+}
+
+.btn {
+    margin-bottom: 12px;
+}
+
+.btn:hover {
+	color:#6A6A6A;
+}
+.create-lesson {
+	margin-top: 10px;
+}
+
+.editor-tab {
+	color: black; 
+	font-weight: bold;
+	border: none;
+	width:14%;
+}
+
+.editor-tab:hover {
+	color: #6A6A6A !important;
+	border: none;  
+
+
+}
+
+.wbdv-module-item-title {
+	color: black;
+	font-weight: bold;
+	margin: auto;
+}
+
+.wbdv-module-item-title:hover {
+	color: #FEAD0A;
+}
+
+.editor-nav {
+	background-color: none;
+	position: sticky;
+}
+
+.nav-tabs {
+	border-bottom: none;
+}
+
+@media only screen and (max-width: 700px) {
+    .toHide {
+        display: none;
+    }
+}

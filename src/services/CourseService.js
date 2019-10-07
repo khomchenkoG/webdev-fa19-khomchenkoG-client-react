@@ -4,11 +4,11 @@ import coursesJson from './Courses.json';
 
 export default class CourseService {
 
-	static myInstance = null;
-	courses = coursesJson;
+    static myInstance = null;
+    courses = coursesJson;
 
     static getInstance() {
-    	
+
         if (this.myInstance == null) {
             this.myInstance = new CourseService()
             // console.log(courses);
@@ -20,6 +20,32 @@ export default class CourseService {
         return this.courses
     }
 
+    findLessons(courseId, moduleId) {
+        let course = this.courses.find(course => course.id === courseId)
+        let modules = course.modules
+        let module = modules.find(module => module.id === moduleId)
+        let lessons;
+        if (module){
+            if (module.lessons){
+               lessons = module.lessons   
+            } 
+        }
+        if (lessons) {
+            return lessons;
+        } else {
+            return [];
+        }
+    }
+
+    findTopics(lessonId, lessons) {
+        let lesson = lessons.find(lesson => lesson.id === lessonId)
+        if (lesson.topics){
+            return lesson.topics
+        } else {
+            return []
+        }
+    }
+
     createCourse(course) {
         this.courses.push(course)
     }
@@ -28,17 +54,22 @@ export default class CourseService {
         return this.courses.find(course => course.id === courseId)
     }
 
+    deleteModule(moduleId, courseId){
+        let course = this.findCourseById(courseId);
+        course.modules = course.modules.filter(module => module.id !== moduleId)
+        this.updateCourse(courseId, course)
+    }
+
     deleteCourse(courseId) {
         this.courses = this.courses.filter(course => course.id !== courseId)
     }
 
     updateCourse(courseId, courseToUpdate) {
-        for (let i=0; i < this.courses.length; i++){
-            if(this.courses[i].id == courseId){
+        for (let i = 0; i < this.courses.length; i++) {
+            if (this.courses[i].id == courseId) {
                 this.courses[i] = courseToUpdate
             }
         }
     }
 
 }
-	
