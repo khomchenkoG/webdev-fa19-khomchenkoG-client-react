@@ -5,37 +5,41 @@ import { FaBars } from 'react-icons/fa';
 import { FaGripHorizontal } from 'react-icons/fa';
 import { FaSortAlphaDown } from 'react-icons/fa';
 import { FaPlusCircle } from 'react-icons/fa';
+import '../CSS/cardView.css'
 
-const CardContainer = ({courses ,callback}) => {
+const CardContainer = ({ courses, switchCallBack, deleteCallBack }) => {
 
-return (<table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col"></th>
-                    <th class="wbdv-header wbdv-title" scope="col">Title</th>
-                    <th class="toHide wbdv-header wbdv-owner" scope="col">Owned by</th>
-                    <th class="toHide wbdv-header wbdv-last-modified" scope="col">Last modified by me</th>
-                    <th class="toHide wbdv-button wbdv-grid-layout" scope="col">
-                        <button onClick={callback.bind(this, ListContainer)}>
-                        <FaGripHorizontal/></button>
-                    </th>
-                    <th class="toHide wbdv-header wbdv-sort" scope="col">
-                        <button class="btn"><FaSortAlphaDown/></button>
-                    </th>
-                </tr>
-            </thead>
-            <div class="card-group">
+    return (
+        <div class = "container-fluid">
+        <nav class="navbar">
+            <div>
+                <a class= "nav-title"> Recent Documents </a>
+                </div>
+    
+            <div>
+                <button onClick={switchCallBack.bind(this, ListContainer)}>
+                        <FaBars/></button>
+            </div>
+        </nav>
+
+               <div class="row">
+
+            
             {
                     courses.map((course) =>
 
                         <CourseCard
-                            course={course}/>
+                            course={course}
+                            callBack={deleteCallBack}/>
                     )
                }
-
+            
             </div>
-           </table>
-           )
+            </div>
+
+    )
+
+
 }
 
 export default CardContainer;

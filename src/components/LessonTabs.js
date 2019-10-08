@@ -1,18 +1,24 @@
 import React from 'react'
 import '../CSS/courseEditor.css'
 
-const LessonTabs = ({ lessons, callBack }) =>
-    <div>
+const LessonTabs = ({ lessons, callBack, activeLesson }) => 
+<div>
         <ul className="nav nav-pills ">
             {
-                lessons.map(lesson =>
-                    <li key={lesson.id} className="nav-item lesson-tab">
-                        <a className={lesson.selected ? 'nav-link active' :  'nav-link'} 
+                
+                lessons.map(lesson => {
+                    let isActive = lesson.id == activeLesson;
+                    return (<li key={lesson.id} 
+                        className={isActive ? "nav-item active-lesson" : "nav-item lesson-tab"}>
+                        <a className='nav-link' 
                         href="#"
                         onClick = {callBack.bind(this, lesson.id)}>
                             {lesson.title}
                         </a>
-                    </li>
+                    </li>)
+
+                }
+                    
                 )
             }
             <form className="form-inline create-lesson">

@@ -14,6 +14,7 @@ let courseService = CourseService.getInstance();
 export default class CourseList extends React.Component {
         constructor(props) {
             super(props);
+            this.switchView = this.switchView.bind(this);
 
             this.state = {
                 newCourse: {
@@ -58,11 +59,6 @@ export default class CourseList extends React.Component {
             }))
         }
 
-
-
-
-
-
             switchView = (view) => {
                 this.setState({
                     currentView: view
@@ -92,7 +88,7 @@ export default class CourseList extends React.Component {
         </nav>
         <this.state.currentView
         courses={this.state.courses}
-        addCallback={this.switchView.bind(this)}
+        switchCallBack={this.switchView}
         deleteCallBack={this.deleteCourse.bind(this)}/>
     </div>
 

@@ -6,7 +6,7 @@ import { FaGripHorizontal } from 'react-icons/fa';
 import { FaSortAlphaDown } from 'react-icons/fa';
 import { FaPlusCircle } from 'react-icons/fa';
 
-const ListContainer = ({courses ,addCallback, deleteCallBack}) => {
+const ListContainer = ({courses ,switchCallBack, deleteCallBack}) => {
 
 
 return (<table class="table table-hover">
@@ -17,7 +17,7 @@ return (<table class="table table-hover">
                     <th class="toHide wbdv-header wbdv-owner" scope="col">Owned by</th>
                     <th class="toHide wbdv-header wbdv-last-modified" scope="col">Last modified by me</th>
                     <th class="toHide wbdv-button wbdv-grid-layout" scope="col">
-                        <button onClick={addCallback.bind(this, CardContainer)}>
+                        <button onClick={switchCallBack.bind(this, CardContainer)}>
                         <FaGripHorizontal/></button>
                     </th>
                     <th class="toHide wbdv-header wbdv-sort" scope="col">

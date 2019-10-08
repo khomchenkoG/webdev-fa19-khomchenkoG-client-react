@@ -9,37 +9,76 @@ import '../CSS/courseEditor.css'
 let courseService = CourseService.getInstance();
 
 export default class CourseEditor
-    extends React.Component {
+extends React.Component {
 
     constructor(props) {
         super(props)
         this.moduleChanged = this.moduleChanged.bind(this)
         this.lessonChanged = this.lessonChanged.bind(this)
         this.moduleDeleted = this.moduleDeleted.bind(this)
+        this.findFirstModule = this.findFirstModule.bind(this)
         this.state = {
             course: courseService.findCourseById(props.match.params.courseId),
-            moduleId: null,
-            lessonId: null
+            moduleId: this.findFirstModule(courseService.findCourseById(props.match.params.courseId)),
+            lessonId: this.findFirstLesson(courseService.findCourseById(props.match.params.courseId), null)
+            
         }
     }
 
-    findLessons(moduleId){
-    let lessonsToRender
+    findFirstModule(course) {
+        let firstModule = null;
+        if (course.modules) {
+            let modules = course.modules;
+            if (modules[0]) {
+                if (modules[0].id) {
+                    firstModule = modules[0].id
+                }
+            }
+        }
+        return firstModule;
+
+    }
+
+    findFirstLesson(course, curModule) {
+        if (!curModule) {
+            curModule = this.findFirstModule(course);
+        }
+        let lessons = null;
+        let firstLesson = null;
+
+        if (curModule) {
+            lessons = courseService.findLessons(course.id, curModule)
+            if (lessons.length != 0) {
+                firstLesson = lessons[0].id
+             }
+        }
+
+
+
+        return firstLesson;
+
+
+    }
+
+
+
+    findLessons(moduleId) {
+        let lessonsToRender
         if (this.state.moduleId) {
             lessonsToRender = courseService
-            .findLessons(this.state.course.id, this.state.moduleId)
+                .findLessons(this.state.course.id, this.state.moduleId)
         } else if (this.state.course.modules[0]) {
             lessonsToRender = this.state.course.modules[0].lessons
-        
+
         }
-        if (!lessonsToRender){
+        if (!lessonsToRender) {
             lessonsToRender = []
         }
-    return lessonsToRender;
+        return lessonsToRender;
     }
 
-    moduleDeleted(curModuleId){
-        this.setState(prevState =>({
+    moduleDeleted(curModuleId) {
+        this.setState(prevState => ({
             course: prevState.course,
             moduleId: curModuleId,
             lessonId: null
@@ -47,19 +86,19 @@ export default class CourseEditor
 
     }
 
-    findTopics(lessonId, lessons){
-    let topicsToRender;
-    if (this.state.lessonId){
-        topicsToRender = courseService
-            .findTopics(this.state.lessonId, lessons)
-    } else if (lessons[0].topics){
-        topicsToRender = lessons[0].topics
+    findTopics(lessonId, lessons) {
+        let topicsToRender;
+        if (this.state.lessonId) {
+            topicsToRender = courseService
+                .findTopics(this.state.lessonId, lessons)
+        } else if (lessons[0].topics) {
+            topicsToRender = lessons[0].topics
 
-    }
-    if (!topicsToRender){
-        topicsToRender = []
-    }
-    return topicsToRender;
+        }
+        if (!topicsToRender) {
+            topicsToRender = []
+        }
+        return topicsToRender;
     }
 
 
@@ -67,31 +106,38 @@ export default class CourseEditor
         this.setState(prevState => ({
             course: prevState.course,
             moduleId: curModuleId,
-            lessonId: prevState.lessonId
+            lessonId: this.findFirstLesson(prevState.course, curModuleId)
         }))
-        
+
     }
 
     lessonChanged = (curLeesonId) => {
         this.setState(prevState => ({
             course: prevState.course,
-            moduleId: prevState.cmoduleId,
+            moduleId: prevState.moduleId,
             lessonId: curLeesonId
         }))
+    }
+
+    setUpView() {
+
+        let lessonsToRender = this.findLessons(this.state.moduleId)
+        let topicsToRender
+        if (lessonsToRender.length != 0) {
+            topicsToRender = this.findTopics(this.state.lessonId, lessonsToRender)
+        } else {
+            topicsToRender = []
+        }
+        return { lessons: lessonsToRender, topics: topicsToRender }
+
+
     }
 
 
 
     render() {
-        let lessonsToRender = this.findLessons(this.state.moduleId)
-        let topicsToRender
-        if (lessonsToRender.length != []){
-            topicsToRender = this.findTopics(this.state.lessonId, lessonsToRender)
-        } else {
-            topicsToRender = []
-        }
-        
-        
+        let args = this.setUpView();
+        console.log(args.lessons)
 
         return (
             <div class="container-fluid">
@@ -113,15 +159,17 @@ export default class CourseEditor
                 <ModuleListContainer 
                 course={this.state.course}
                 moduleChanged={this.moduleChanged}
-                moduleDeleted={this.moduleDeleted}/>
+                moduleDeleted={this.moduleDeleted}
+                activeModule={this.state.moduleId}/>
             </div>
             <div className="col-8 take-full-width">
             <LessonTabs 
-            lessons={lessonsToRender}
+            lessons={args.lessons}
             callBack={this.lessonChanged}
+            activeLesson={this.state.lessonId}
             />
             <TopicTabs 
-            topics={topicsToRender}
+            topics={args.topics}
             />
             </div>
 

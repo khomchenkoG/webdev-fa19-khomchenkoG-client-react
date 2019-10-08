@@ -1,51 +1,77 @@
-
-.mudule-lst{
-	height: 100vh; 
-	background:none;
+.mudule-lst {
+    height: 100vh;
+    background: none;
 }
 
 .wbdv-module-item {
-	display: block; 
-	background: #C8C8C8; 
-	margin-top: 10px; 
-	border-radius: 10px;
-	text-align: center;
+    display: block;
+    background: #D8D6F3;
+    margin-top: 10px;
+    border-radius: 10px;
+    text-align: center;
 }
 
 .lesson-tab {
-	display: block; 
-	background: #DEEFFE; 
-	margin-top: 10px; 
-	margin-left: 10px;
-	border-radius: 10px;
+    display: block;
+    background: #DEEFFE;
+    margin-top: 10px;
+    margin-left: 10px;
+    border-radius: 10px;
 }
+
+.active-lesson {
+    display: block;
+    background: #DEEFFE;
+    margin-top: 10px;
+    margin-left: 10px;
+    border-radius: 10px;
+    border-style: outset;
+}
+
 
 .topic-tab {
-	display: block; 
-	background: #0059A7; 
-	margin-top: 10px; 
-	margin-left: 10px;
-	color: white;
+    display: block;
+    background: #0059A7;
+    margin-top: 10px;
+    margin-left: 10px;
+    color: white;
 }
 
-.wbdv-module-item-active {
-	display: block; 
-	background: #FEAD0A; 
-	margin-top: 10px; 
-	border-radius: 10px;
+.module-item-title {
+    color: black;
+    font-weight: bold;
+    margin: auto;
+}
+
+.module-item-title:hover {
+    color: White;
+}
+
+.module-title-active:hover {
+    color: White;
+}
+
+.module-active {
+    display: block;
+    background: #685FC6;
+    margin-top: 10px;
+    border-radius: 10px;
 
 }
 
-.active {
-	background: red;
+.module-title-active {
+    color: white;
+    font-weight: bold;
+    margin: auto;
 }
 
-.take-full-width{
-	width:100%;
+
+.take-full-width {
+    width: 100%;
 }
 
-.take-full-height{
-	height:100%;
+.take-full-height {
+    height: 100%;
 }
 
 .btn {
@@ -53,43 +79,34 @@
 }
 
 .btn:hover {
-	color:#6A6A6A;
+    color: #6A6A6A;
 }
+
 .create-lesson {
-	margin-top: 10px;
+    margin-top: 10px;
 }
 
 .editor-tab {
-	color: black; 
-	font-weight: bold;
-	border: none;
-	width:14%;
+    color: black;
+    font-weight: bold;
+    border: none;
+    width: 14%;
 }
 
 .editor-tab:hover {
-	color: #6A6A6A !important;
-	border: none;  
+    color: #6A6A6A !important;
+    border: none;
 
 
-}
-
-.wbdv-module-item-title {
-	color: black;
-	font-weight: bold;
-	margin: auto;
-}
-
-.wbdv-module-item-title:hover {
-	color: #FEAD0A;
 }
 
 .editor-nav {
-	background-color: none;
-	position: sticky;
+    background-color: none;
+    position: sticky;
 }
 
 .nav-tabs {
-	border-bottom: none;
+    border-bottom: none;
 }
 
 @media only screen and (max-width: 700px) {

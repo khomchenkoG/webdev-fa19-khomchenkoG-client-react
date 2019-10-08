@@ -2,11 +2,14 @@ import React from 'react'
 import '../CSS/moduleTab.css'
 import { FaTimes } from 'react-icons/fa';
 
-const ModuleListItem = ({ module, courseId, callBack, deleteModule }) =>
+const ModuleListItem = ({ module, courseId, callBack, deleteModule, activateModule, activeModule }) => {
+	let isActive = activeModule == module.id
 
-<div className="wbdv-module-item">
+
+return (
+	<div className={isActive ? "wbdv-module-item module-active" : "wbdv-module-item"} >
 	<div class="form-inline">
-		<a className="nav-link wbdv-module-item-title" 
+		<a className= {isActive ? "nav-link module-title-active" : "nav-link module-item-title"}
             onClick = {callBack.bind(this, module.id)}
             href="#" >
               {module.title}
@@ -15,5 +18,10 @@ const ModuleListItem = ({ module, courseId, callBack, deleteModule }) =>
               className="btn" style={{float: 'right'}}><FaTimes class="delete-btn" /></button>
 	</div>            
 </div>
+)
+
+}
+
+
 
 export default ModuleListItem

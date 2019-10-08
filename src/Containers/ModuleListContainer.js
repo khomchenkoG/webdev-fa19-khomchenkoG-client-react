@@ -15,12 +15,14 @@ extends React.Component {
         this.titleChanged = this.titleChanged.bind(this)
         this.createModule = this.createModule.bind(this)
         this.deleteModule = this.deleteModule.bind(this)
+        this.activateModule = this.activateModule.bind(this)
         this.state = {
             newModule: {
                 title: ''
             },
             courseId: this.props.course.id,
             modules: this.props.course.modules,
+            activeModule: this.props.activeModule,
             moduleChanged: this.props.moduleChanged,
             moduleDeleted: this.props.moduleDeleted
         }
@@ -51,8 +53,18 @@ extends React.Component {
             }
             this.state.moduleDeleted(newModuleId)
         })
+    }
 
-}
+    activateModule = (curModuleId) => {
+        this.setState(prevState => ({
+            courseId: prevState.courseId,
+            modules: prevState.modules,
+            activeModule: curModuleId,
+            moduleChanged: prevState.moduleChanged,
+            moduleDeleted: prevState.moduleDeleted
+        
+    }), () =>{this.state.moduleChanged(curModuleId)}) 
+    }
 
 
 
@@ -95,8 +107,9 @@ render() {
                                 key={module.id}
                                 module={module}
                                 courseId={this.state.courseId}
-                                callBack={this.state.moduleChanged}
-                                deleteModule={this.deleteModule}/>
+                                callBack={this.activateModule}
+                                deleteModule={this.deleteModule}
+                                activeModule={this.state.activeModule}/>
                         )
                     }
           
