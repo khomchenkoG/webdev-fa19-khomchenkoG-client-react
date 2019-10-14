@@ -28,12 +28,28 @@
     border-style: outset;
 }
 
+.topic-name {
+     color:white;
+ }
 
+.topic-name:hover {
+    font-weight:bold;
+}
 .topic-tab {
     display: block;
-    background: #0059A7;
+    background: #DFC0FF;
+    block-size: 40px;
     margin-top: 10px;
     margin-left: 10px;
+    color: white;
+}
+
+.active-topic {
+    display: block;
+    background: #DFC0FF;
+    margin-top: 10px;
+    margin-left: 10px;
+    border-style: double;
     color: white;
 }
 

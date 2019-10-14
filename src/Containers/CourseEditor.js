@@ -4,26 +4,43 @@ import LessonTabs from "../components/LessonTabs";
 import TopicTabs from "../components/TopicTabs";
 import CourseService from '../services/CourseService';
 import ModuleListContainer from '../Containers/ModuleListContainer';
+import WidgetListContainer from '../Containers/WidgetListContainer';
 import '../CSS/courseEditor.css'
+import Provider from "react-redux/lib/components/Provider";
+import {createStore} from "redux";
+import widgetListReducer from "../reducers/WidgetListReducer";
+import WidgetService from "../services/WidgetService";
 
 let courseService = CourseService.getInstance();
 
+
+const EditorContext = React.createContext(null)
+
+
 export default class CourseEditor
 extends React.Component {
+
 
     constructor(props) {
         super(props)
         this.moduleChanged = this.moduleChanged.bind(this)
         this.lessonChanged = this.lessonChanged.bind(this)
+        this.topicChanged = this.topicChanged.bind(this)
         this.moduleDeleted = this.moduleDeleted.bind(this)
         this.findFirstModule = this.findFirstModule.bind(this)
+
         this.state = {
             course: courseService.findCourseById(props.match.params.courseId),
             moduleId: this.findFirstModule(courseService.findCourseById(props.match.params.courseId)),
-            lessonId: this.findFirstLesson(courseService.findCourseById(props.match.params.courseId), null)
+            lessonId: this.findFirstLesson(courseService.findCourseById(props.match.params.courseId), null),
+            topicId: null,
+            widgetService: null
+
             
         }
     }
+
+
 
     findFirstModule(course) {
         let firstModule = null;
@@ -52,11 +69,7 @@ extends React.Component {
                 firstLesson = lessons[0].id
              }
         }
-
-
-
         return firstLesson;
-
 
     }
 
@@ -81,7 +94,9 @@ extends React.Component {
         this.setState(prevState => ({
             course: prevState.course,
             moduleId: curModuleId,
-            lessonId: null
+            lessonId: null,
+            topicId: prevState.topicId,
+            widgetService: prevState.widgetService
         }))
 
     }
@@ -106,7 +121,10 @@ extends React.Component {
         this.setState(prevState => ({
             course: prevState.course,
             moduleId: curModuleId,
-            lessonId: this.findFirstLesson(prevState.course, curModuleId)
+            lessonId: this.findFirstLesson(prevState.course, curModuleId),
+            topicId: null,
+            widgetService: prevState.widgetService
+
         }))
 
     }
@@ -115,8 +133,22 @@ extends React.Component {
         this.setState(prevState => ({
             course: prevState.course,
             moduleId: prevState.moduleId,
-            lessonId: curLeesonId
+            lessonId: curLeesonId,
+            topicId: null,
+            widgetService: prevState.widgetService
         }))
+    }
+
+    topicChanged = (curTopicId) => {
+        this.setState(prevState => ({
+            course: prevState.course,
+            moduleId: prevState.moduleId,
+            lessonId: prevState.lessonId,
+            topicId: curTopicId,
+            widgetService: new WidgetService(this.state.course.id, prevState.moduleId,
+                prevState.lessonId)
+        }))
+
     }
 
     setUpView() {
@@ -137,7 +169,11 @@ extends React.Component {
 
     render() {
         let args = this.setUpView();
-        console.log(args.lessons)
+        let store = createStore(widgetListReducer);
+        if (this.state.topicId != null){
+            store = createStore(widgetListReducer,
+                {widgets: this.state.widgetService.findWidgets(this.state.topicId)})
+        }
 
         return (
             <div class="container-fluid">
@@ -170,7 +206,13 @@ extends React.Component {
             />
             <TopicTabs 
             topics={args.topics}
+            callBack={this.topicChanged}
+            activeTopic={this.state.topicId}
             />
+            <Provider store={store} context= {EditorContext}>
+                <WidgetListContainer context= {EditorContext}/>
+            </Provider>
+
             </div>
 
 

@@ -1,17 +1,23 @@
 import React from 'react'
+import '../CSS/courseEditor.css'
 
-const TopicTabs = ({topics}) =>
+
+const TopicTabs = ({topics, callBack, activeTopic}) =>
+
     <div>
         <ul className="nav nav-pills">
             {
-                topics.map(topic =>
-                    <li key={topic.id} className="nav-item">
-                        <a className={topic.selected ? 'nav-link active' :  'nav-link topic-tab'} 
-                        href="#">
+
+                topics.map(topic => {
+                    let isActive = topic.id === activeTopic
+                    return (<li key={topic.id} className= {isActive ? "active-topic" : " topic-tab"}>
+                        <a className="nav-link topic-name"
+                        href="#"
+                        onClick = {callBack.bind(this, topic.id)}>
                             {topic.title}
                         </a>
-                    </li>
-                )
+                    </li>)
+            } )
             }
         </ul>
     </div>

@@ -7,7 +7,7 @@ const LessonTabs = ({ lessons, callBack, activeLesson }) =>
             {
                 
                 lessons.map(lesson => {
-                    let isActive = lesson.id == activeLesson;
+                    let isActive = lesson.id === activeLesson;
                     return (<li key={lesson.id} 
                         className={isActive ? "nav-item active-lesson" : "nav-item lesson-tab"}>
                         <a className='nav-link' 

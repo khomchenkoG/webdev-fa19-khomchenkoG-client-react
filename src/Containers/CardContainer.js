@@ -13,7 +13,7 @@ const CardContainer = ({ courses, switchCallBack, deleteCallBack }) => {
         <div class = "container-fluid">
         <nav class="navbar">
             <div>
-                <a class= "nav-title"> Recent Documents </a>
+                <a clsass= "nav-title"> Recent Documents </a>
                 </div>
     
             <div>
@@ -21,10 +21,7 @@ const CardContainer = ({ courses, switchCallBack, deleteCallBack }) => {
                         <FaBars/></button>
             </div>
         </nav>
-
                <div class="row">
-
-            
             {
                     courses.map((course) =>
 
@@ -33,7 +30,6 @@ const CardContainer = ({ courses, switchCallBack, deleteCallBack }) => {
                             callBack={deleteCallBack}/>
                     )
                }
-            
             </div>
             </div>
 
