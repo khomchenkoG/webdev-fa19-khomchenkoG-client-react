@@ -18,24 +18,29 @@
                   {
                     "type": "HEADING",
                     "size": 1,
-                    "text": "The Document Object Model"
+                    "data": "The Document Object Model",
+                    "id": "1234421"
                   },
                   {
                     "type": "PARAGRAPH",
-                    "text": "This topic introduces the DOM"
+                    "data": "This topic introduces the DOM",
+                    "id": "8237509"
                   },
                   {
                     "type": "LIST",
-                    "items": "Nodes,Attributes,Tag names,IDs,Styles,Classes"
+                    "data": "Nodes,Attributes,Tag names,IDs,Styles,Classes",
+                    "id": "1083709"
                   },
                   {
                     "type": "IMAGE",
-                    "src": "https://picsum.photos/200"
+                    "data": "https://picsum.photos/200",
+                    "id": "2874653"
                   },
                   {
                     "type": "LINK",
                     "title": "The DOM",
-                    "href": "https://en.wikipedia.org/wiki/Document_Object_Model"
+                    "data": "https://en.wikipedia.org/wiki/Document_Object_Model",
+                    "id": "1928857"
                   }
                 ]
               },

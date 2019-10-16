@@ -7,7 +7,8 @@ import ModuleListContainer from '../Containers/ModuleListContainer';
 import WidgetListContainer from '../Containers/WidgetListContainer';
 import '../CSS/courseEditor.css'
 import Provider from "react-redux/lib/components/Provider";
-import {createStore} from "redux";
+import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import widgetListReducer from "../reducers/WidgetListReducer";
 import WidgetService from "../services/WidgetService";
 
@@ -146,7 +147,7 @@ extends React.Component {
             lessonId: prevState.lessonId,
             topicId: curTopicId,
             widgetService: new WidgetService(this.state.course.id, prevState.moduleId,
-                prevState.lessonId)
+                prevState.lessonId, curTopicId)
         }))
 
     }
@@ -172,7 +173,8 @@ extends React.Component {
         let store = createStore(widgetListReducer);
         if (this.state.topicId != null){
             store = createStore(widgetListReducer,
-                {widgets: this.state.widgetService.findWidgets(this.state.topicId)})
+                {widgets: this.state.widgetService.findWidgets()},
+                window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
         }
 
         return (

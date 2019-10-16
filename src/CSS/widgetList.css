@@ -1,0 +1,23 @@
+.widget-container {
+    width:100%;
+    padding-top: 10px;
+    box-sizing: border-box;
+    border-style: dotted;
+}
+
+.widget-component-element{
+    margin-bottom: 19px;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.widget-dropdown__control{
+    height: 70%;
+}
+
+.Dropdown-menu * {
+    max-height: 95px;
+}
+

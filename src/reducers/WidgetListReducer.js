@@ -6,7 +6,7 @@ const initialState = {
     widgets: []
 }
 
-let widgetService = WidgetService.getInstance();
+const widgetService = WidgetService.getInstance();
 
 const widgetListReducer = (state = initialState, action) => {
 
@@ -31,7 +31,20 @@ const widgetListReducer = (state = initialState, action) => {
             }
 
         case 'UPDATE_WIDGET':
-            return state;
+                // for (let i = 0; i < state.widgets.length; i++) {
+                //     if (state.widgets[i].id == action.widgetId) {
+                //         state.widgets[i] = action.widget
+                //     }
+                // }
+            return {
+                widgets: state.widgets.map(widget=> {
+                    if (widget.id === action.widgetId) {
+                        return action.widget;
+                    } else {
+                        return widget
+                    }
+        })
+                };
         case 'FIND_ALL_WIDGETS_FOR_TOPIC':
             return {
                 widgets: widgetService.findWidgets(action.topicId)

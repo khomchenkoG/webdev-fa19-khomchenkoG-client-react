@@ -3,22 +3,25 @@ import HeadingWidget from "./HeadingWidget";
 import ParagraphWidget from "./ParagraphWidget";
 import ListWidget from "./ListWidget";
 
-const WidgetListComponent = ({widgets, addWidget, deleteWidget}) =>
+const WidgetListComponent = ({widgets, addWidget, deleteWidget, updateWidget}) =>
     <div>
         <h2>Widget list</h2>
         <button onClick={addWidget}>Add Widget</button>
-        <ul>
+        <div>
             {
                 widgets.map(widget =>
-                    <li>
-                        { widget.type === "LIST" && <ListWidget widget={widget}/>}
-                        { widget.type === "HEADING" && <HeadingWidget widget={widget}/>}
-                        { widget.type === "PARAGRAPH" && <ParagraphWidget widget={widget}/>}
-                        <button onClick={() => deleteWidget(widget.id)}>Delete</button>
-                    </li>
+                    <div>
+                        {widget.type === "LIST" && <ListWidget widget={widget}
+                                                               deleteWidget={deleteWidget}
+                                                               updateWidget={updateWidget}/>}
+                        {widget.type === "HEADING" && <HeadingWidget widget={widget}
+                                                                     deleteWidget={deleteWidget}
+                                                                     updateWidget={updateWidget}/>}
+                        {widget.type === "PARAGRAPH" && <ParagraphWidget widget={widget}/>}
+                    </div>
                 )
             }
-        </ul>
+        </div>
     </div>
 
 export default WidgetListComponent;

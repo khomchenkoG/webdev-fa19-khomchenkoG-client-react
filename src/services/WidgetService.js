@@ -6,18 +6,16 @@ import '../CSS/courseEditor.css'
 let courseService = CourseService.getInstance()
 
 export default class WidgetService {
-    constructor(courseId, moduleId, lessonId) {
-        this.state = {
-            courseId: courseId,
-            moduleId: moduleId,
-            lessonId: lessonId,
-        }
+    constructor(courseId, moduleId, lessonId, topicId) {
+        this.course = courseService.findCourseById(courseId)
+        this.topic = courseService.findCourseById(courseId)
+            .modules.find(module => module.id === moduleId)
+            .lessons.find(lesson => lesson.id === lessonId)
+            .topics.find(topic => topic.id === topicId)
     }
 
+
     static myInstance = this;
-
-    static widgets = null;
-
 
 
     static getInstance() {
@@ -28,13 +26,9 @@ export default class WidgetService {
     createWidget(topicId, widget) {
     }
 
-    findWidgets(topicId) {
-        let course = courseService.findCourseById(this.state.courseId)
-        let module = course.modules.find(module => module.id === this.state.moduleId)
-        let lesson = module.lessons.find(lesson => lesson.id === this.state.lessonId)
-        let topic = lesson.topics.find(topic => topic.id === topicId)
-        if (topic.widgets) {
-            return topic.widgets;
+    findWidgets() {
+        if (this.topic.widgets) {
+            return this.topic.widgets;
         } else return []
     }
 
@@ -42,9 +36,20 @@ export default class WidgetService {
     }
 
     updateWidget(widgetId, widget) {
+        if (this.topic.widgets) {
+            let widgets = this.topic.widgets
+            for (let i = 0; i < widgets.length; i++) {
+                if (widgets[i].id == widgetId) {
+                    widgets[i] = widget
+                }
+        }
+        }
+
     }
 
     deleteWidget(widgetId) {
+        let widgets = this.topic.widgets.filter(widget => widget.id !== widgetId)
+        return widgets
     }
 
 }

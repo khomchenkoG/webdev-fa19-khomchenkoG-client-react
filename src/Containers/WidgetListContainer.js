@@ -18,7 +18,7 @@ const dispatcherToPropertyMapper = dispatch => {
             dispatch({type: 'DELETE_WIDGET', widgetId: id})
         },
         updateWidget: (id, widget) => {
-            dispatch({type: 'DELETE_WIDGET', widgetId: id, widget: widget})
+            dispatch({type: 'UPDATE_WIDGET', widgetId: id, widget: widget})
         },
         findAllWidgetsForTopic: (id) => {
             dispatch({
