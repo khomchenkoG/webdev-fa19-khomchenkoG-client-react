@@ -20,6 +20,41 @@ export default class CourseService {
         return this.courses
     }
 
+    findInitialItems(courseId){
+        let initItems = {
+            "firstModule": null,
+            "firstLesson": null,
+            "firstTopic": null,
+        }
+        let course = this.findCourseById(courseId)
+        if (course.modules[0]){
+            let firstMod = course.modules[0]
+            initItems.firstModule = firstMod.id;
+            if (firstMod.lessons){
+                if (firstMod.lessons[0]){
+                    let firstLes = firstMod.lessons[0];
+                    initItems.firstLesson = firstLes.id;
+                    if (firstLes.topics){
+                        if (firstLes.topics[0]){
+                            let firstTop = firstLes.topics[0]
+                            initItems.firstTopic = firstTop.id;
+                        }
+
+                    }
+                }
+            }
+        }
+        return initItems;
+    }
+
+    findWidgets(courseId, moduleId, lessonId, topicId){
+        if(courseId && moduleId && lessonId && topicId){
+            let course = this.findCourseById(courseId);
+            let module
+        }
+
+    }
+
     findLessons(courseId, moduleId) {
         let course = this.courses.find(course => course.id === courseId)
         let modules = course.modules

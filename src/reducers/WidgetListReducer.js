@@ -15,7 +15,8 @@ const widgetListReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'DELETE_WIDGET':
             return {
-                widgets: state.widgets.filter(widget => widget.id !== action.widgetId)
+                widgets: state.widgets.filter(widget => widget.id !== action.widgetId),
+                preview: state.preview
             }
         case 'CREATE_WIDGET':
             return {
@@ -27,15 +28,11 @@ const widgetListReducer = (state = initialState, action) => {
                         text: 'New Heading',
                         id: (new Date()).getTime()
                     }
-                ]
+                ],
+                preview: state.preview
             }
 
         case 'UPDATE_WIDGET':
-                // for (let i = 0; i < state.widgets.length; i++) {
-                //     if (state.widgets[i].id == action.widgetId) {
-                //         state.widgets[i] = action.widget
-                //     }
-                // }
             return {
                 widgets: state.widgets.map(widget=> {
                     if (widget.id === action.widgetId) {
@@ -43,14 +40,19 @@ const widgetListReducer = (state = initialState, action) => {
                     } else {
                         return widget
                     }
-        })
+        }),
+                preview: state.preview
                 };
         case 'FIND_ALL_WIDGETS_FOR_TOPIC':
             return {
-                widgets: widgetService.findWidgets(action.topicId)
+                widgets: widgetService.findWidgets(action.topicId),
+                preview: state.preview
             };
-        case 'FIND_ALL_WIDGETS':
-            return state;
+        case 'SWITCH_PREVIEW':
+            return {
+                widgets: state.widgets,
+                preview: !state.preview
+            };
         default:
             return state
     }

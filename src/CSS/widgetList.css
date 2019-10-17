@@ -12,6 +12,16 @@
     margin-right: auto;
 }
 
+.add-btn {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    bottom: 0.5%;
+    left:0;
+    border: none;
+    background: none;
+    color: red
+}
+
 
 .widget-dropdown__control{
     height: 70%;

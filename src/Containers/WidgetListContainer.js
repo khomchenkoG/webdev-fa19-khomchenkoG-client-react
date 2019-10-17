@@ -5,7 +5,8 @@ import CourseEditor from "./CourseEditor";
 
 const stateToPropertyMapper = state => {
     return {
-        widgets: state.widgets
+        widgets: state.widgets,
+        preview: state.preview
     }
 }
 
@@ -28,6 +29,11 @@ const dispatcherToPropertyMapper = dispatch => {
         findAllWidgets: () => {
             dispatch({
                 type: 'FIND_ALL_WIDGETS'
+            })
+            },
+        switchPreview:()  => {
+            dispatch({
+                type: 'SWITCH_PREVIEW'
             })
         }
     }

@@ -32,12 +32,9 @@ extends React.Component {
 
         this.state = {
             course: courseService.findCourseById(props.match.params.courseId),
-            moduleId: this.findFirstModule(courseService.findCourseById(props.match.params.courseId)),
-            lessonId: this.findFirstLesson(courseService.findCourseById(props.match.params.courseId), null),
-            topicId: null,
-            widgetService: null
-
-            
+            moduleId: courseService.findInitialItems(props.match.params.courseId).firstModule,
+            lessonId: courseService.findInitialItems(props.match.params.courseId).firstLesson,
+            topicId: courseService.findInitialItems(props.match.params.courseId).firstTopic,
         }
     }
 
@@ -74,6 +71,16 @@ extends React.Component {
 
     }
 
+    findFirstTopic(curModule, curLesson){
+        let module = this.state.course.modules.find(module => module.id === curModule);
+        let lesson = module.lessons.find(lesson=>lesson.id === curLesson);
+        let topicId = null;
+        if (lesson.topics && lesson.topics.length > 0){
+            topicId = lesson.topics[0].id
+        }
+        return topicId;
+    }
+
 
 
     findLessons(moduleId) {
@@ -99,7 +106,6 @@ extends React.Component {
             topicId: prevState.topicId,
             widgetService: prevState.widgetService
         }))
-
     }
 
     findTopics(lessonId, lessons) {
@@ -123,9 +129,7 @@ extends React.Component {
             course: prevState.course,
             moduleId: curModuleId,
             lessonId: this.findFirstLesson(prevState.course, curModuleId),
-            topicId: null,
-            widgetService: prevState.widgetService
-
+            topicId: this.findFirstTopic(curModuleId, this.findFirstLesson(prevState.course, curModuleId))
         }))
 
     }
@@ -135,8 +139,7 @@ extends React.Component {
             course: prevState.course,
             moduleId: prevState.moduleId,
             lessonId: curLeesonId,
-            topicId: null,
-            widgetService: prevState.widgetService
+            topicId: this.findFirstTopic(prevState.moduleId, curLeesonId)
         }))
     }
 
@@ -172,8 +175,14 @@ extends React.Component {
         let args = this.setUpView();
         let store = createStore(widgetListReducer);
         if (this.state.topicId != null){
+            let topicsWidgets = args.topics.find(topic => topic.id === this.state.topicId).widgets;
+            let widgets = [];
+            if (topicsWidgets.length > 0){
+                widgets = topicsWidgets;
+            }
             store = createStore(widgetListReducer,
-                {widgets: this.state.widgetService.findWidgets()},
+                {widgets: widgets,
+                preview: true},
                 window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
         }
 

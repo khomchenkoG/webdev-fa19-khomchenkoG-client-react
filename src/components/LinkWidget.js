@@ -1,10 +1,12 @@
 import React from 'react'
-import Dropdown from "react-dropdown-select";
 import '../CSS/widgetList.css'
+import Dropdown from 'react-dropdown-select'
 import 'react-dropdown/style.css'
 import {FaTimes} from 'react-icons/fa';
 import {TiArrowDownThick} from 'react-icons/ti';
 import {TiArrowUpThick} from 'react-icons/ti';
+
+
 
 const widgetOptions = [
     { label: "Heading", value: "HEADING" },
@@ -13,14 +15,12 @@ const widgetOptions = [
     { label: "Image", value: "IMAGE" },
     { label: "Link", value: "LINK" },
 ]
-const orderOptions = [{ label: "Ordered", value: true },
-    { label: "Unordered", value: false },]
 
-const ListWidget = ({widget, deleteWidget, updateWidget, preview}) => {
-    if (!preview){
-        return ( <div className="container widget-container">
+const LinkWidget = ({widget, deleteWidget, updateWidget, preview}) => {
+  if(!preview){
+        return(<div className="container widget-container">
             <div className="navbar">
-                <div className="nav-header"><h2> List widget </h2></div>
+                <div className="nav-header"><h2> Link widget </h2></div>
                 <div className="form-inline float-right">
                     <button
                         onClick={() => deleteWidget(widget.id)}
@@ -34,7 +34,7 @@ const ListWidget = ({widget, deleteWidget, updateWidget, preview}) => {
                                       {
                                           "type": e[0].value,
                                           "size": widget.size,
-                                          "text": widget.text,
+                                          "data": widget.data,
                                           "id": widget.id
                                       }
                                   )} size={17} placeholder={widget.type}/>
@@ -47,8 +47,8 @@ const ListWidget = ({widget, deleteWidget, updateWidget, preview}) => {
 
             <div className="widget-component-element">
                 <input
-                    value={widget.data}
-                    placeholder={widget.data === "" ? "List items separated by comma": widget.data}
+                    value={widget.title}
+                    placeholder={widget.title === "" ? "Link URL" : widget.title}
                     onChange={(e) =>
                         updateWidget(widget.id,
                             {
@@ -57,64 +57,39 @@ const ListWidget = ({widget, deleteWidget, updateWidget, preview}) => {
                                 "data": e.target.value,
                                 "id": widget.id
                             })}
+
                     className="form-control"/>
             </div>
             <div className="widget-component-element">
-                <Dropdown
-                    options={orderOptions}
-                    placeholder={widget.ordered ? "Ordered": "Unordered"}/>
+                <input
+                    value={widget.data}
+                    placeholder={widget.data === "" ? "Link text" : widget.data}
+                    onChange={(e) =>
+                        updateWidget(widget.id,
+                            {
+                                "type": widget.type,
+                                "size": widget.size,
+                                "data": e.target.value,
+                                "id": widget.id
+                            })}
+
+                    className="form-control"/>
             </div>
             <div className="widget-component-element">
                 <input
                     placeholder="Widget name" className="form-control"/>
             </div>
             <div className="widget-component-element">
-                <div>
-                    <h3> Preview </h3>
-                    {!widget.ordered &&
-                    <ul>
-                        {
-                            widget.data.split(',').map(item =>
-                                <li>{item}</li>
-                            )
-                        }
-                    </ul>
-                    }
-                    {widget.ordered &&
-                    <ol>
-                        {
-                            widget.data.split(',').map(item =>
-                                <li>{item}</li>
-                            )
-                        }
-                    </ol>
-                    }
-                </div>
+                <h3>Preview</h3>
+                <a href={widget.data}>{widget.title}</a>
             </div>
         </div>)
     } else {
-        return (<div>
-            {!widget.ordered &&
-            <ul>
-                {
-                    widget.data.split(',').map(item =>
-                        <li>{item}</li>
-                    )
-                }
-            </ul>
-            }
-            {widget.ordered &&
-            <ol>
-                {
-                    widget.data.split(',').map(item =>
-                        <li>{item}</li>
-                    )
-                }
-            </ol>
-            }
+        return(<div>
+            <a href={widget.data}>{widget.title}</a>
         </div>)
     }
 }
 
 
-export default ListWidget
+export default LinkWidget
