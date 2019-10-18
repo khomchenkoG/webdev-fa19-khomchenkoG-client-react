@@ -39,10 +39,17 @@ const widgetListReducer = (state = initialState, action) => {
                 widgets: [
                     ...state.widgets,
                     {
-                        type: 'HEADING',
-                        size: 2,
-                        data: 'New Heading',
-                        id: (new Date()).getTime()
+                        type: "HEADING",
+                        index: 1,
+                        link_title: "",
+                        heading_size: 1,
+                        heading_data: "",
+                        list_data: "",
+                        paragraph_data: "",
+                        image_url: "",
+                        link_data: "",
+                        ordered: true,
+                        id: (new Date().getTime())
                     }
                 ],
                 preview: state.preview
