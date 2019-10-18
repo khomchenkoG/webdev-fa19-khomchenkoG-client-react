@@ -12,25 +12,31 @@ const widgetOptions = [
     { label: "Link", value: "LINK" },
 ]
 
-const ImageWidget = ({widget, deleteWidget, updateWidget, preview}) => {
+const ImageWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveDown, isFirst, isLast}) => {
     if (!preview) {
         return(<div className="container widget-container">
             <div className="navbar">
                 <div className="nav-header"><h2> Image widget </h2></div>
                 <div className="form-inline float-right">
-                    <button
-                        onClick={() => deleteWidget(widget.id)}
+                    <button style={isFirst ? {display: 'none'}: {}}
+                        onClick={() => moveUp(widget.id)}
                     ><TiArrowUpThick class="delete-btn" size={28}/></button>
-                    <button
-                        onClick={() => deleteWidget(widget.id)}
+                    <button style={isLast ? {display: 'none'}: {}}
+                        onClick={() => moveDown(widget.id)}
                     ><TiArrowDownThick class="delete-btn" size={28}/></button>
                     <Dropdown className="widget-dropdown" options={widgetOptions}
                               onChange={(e) =>
                                   updateWidget(widget.id,
                                       {
                                           "type": e[0].value,
-                                          "size": widget.size,
-                                          "data": widget.data,
+                                          "index": widget.index,
+                                          "link_title": widget.link_title,
+                                          "heading_size": widget.heading_size,
+                                          "heading_data": widget.heading_data,
+                                          "list_data": widget.list_data,
+                                          "paragraph_data": widget.paragraph_data,
+                                          "image_url": widget.image_url,
+                                          "link_data": widget.link_data,
                                           "id": widget.id
                                       }
                                   )} size={17} placeholder={widget.type}/>
@@ -43,15 +49,22 @@ const ImageWidget = ({widget, deleteWidget, updateWidget, preview}) => {
 
             <div className="widget-component-element">
                 <input
-                    value={widget.data}
-                    placeholder={widget.data === "" ? "Image URL" : widget.data}
+                    value={widget.image_url}
+                    placeholder={widget.image_url === "" ? "Image URL" : widget.image_url}
                     onChange={(e) =>
                         updateWidget(widget.id,
                             {
                                 "type": widget.type,
-                                "size": widget.size,
-                                "data": e.target.value,
+                                "index": widget.index,
+                                "link_title": widget.link_title,
+                                "heading_size": widget.heading_size,
+                                "heading_data": widget.heading_data,
+                                "list_data": widget.list_data,
+                                "paragraph_data": widget.paragraph_data,
+                                "image_url": e.target.value,
+                                "link_data": widget.link_data,
                                 "id": widget.id
+
                             })}
 
                     className="form-control"/>
@@ -63,13 +76,13 @@ const ImageWidget = ({widget, deleteWidget, updateWidget, preview}) => {
             <div className="widget-component-element">
                 <h3>Preview</h3>
                 <img className="img-fluid "
-                     src={widget.data}/>
+                     src={widget.image_url}/>
             </div>
         </div>)
     } else{
         return(<div>
             <img className="img-fluid "
-                 src={widget.data}/>
+                 src={widget.image_url}/>
         </div>)
     }
 }

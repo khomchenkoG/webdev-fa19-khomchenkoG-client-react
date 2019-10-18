@@ -21,26 +21,33 @@ const sizeOptions = [{ label: "Heading 1", value: 1 },
     { label: "Heading 2", value: 2 },
     { label: "Heading 3", value: 3 },]
 
-const HeadingWidget = ({widget, deleteWidget, updateWidget, preview}) => {
+const HeadingWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveDown, isFirst, isLast}) => {
+
     if (!preview){
         return (
             <div className="container widget-container">
                 <div className="navbar">
                     <div className="nav-header"><h2> Heading widget </h2></div>
                     <div className="form-inline float-right">
-                        <button
-                            onClick={() => deleteWidget(widget.id)}
+                        <button style={isFirst ? {display: 'none'}: {}}
+                            onClick={() => moveUp(widget.id)}
                         ><TiArrowUpThick class="delete-btn" size={28}/></button>
-                        <button
-                            onClick={() => deleteWidget(widget.id)}
+                        <button style={isLast ? {display: 'none'}: {}}
+                            onClick={() => moveDown(widget.id)}
                         ><TiArrowDownThick class="delete-btn" size={28}/></button>
                         <Dropdown className="widget-dropdown" options={widgetOptions}
                                   onChange={(e) =>
                                       updateWidget(widget.id,
                                           {
                                               "type": e[0].value,
-                                              "size": widget.size,
-                                              "data": widget.data,
+                                              "index": widget.index,
+                                              "link_title": widget.link_title,
+                                              "heading_size": widget.heading_size,
+                                              "heading_data": widget.heading_data,
+                                              "list_data": widget.list_data,
+                                              "paragraph_data": widget.paragraph_data,
+                                              "image_url": widget.image_url,
+                                              "link_data": widget.link_data,
                                               "id": widget.id
                                           }
                                       )} size={17} placeholder={widget.type}/>
@@ -53,14 +60,20 @@ const HeadingWidget = ({widget, deleteWidget, updateWidget, preview}) => {
 
                 <div class="widget-component-element">
                     <input
-                        value={widget.data}
-                        placeholder={widget.data === "" ? "Heading name" : widget.data}
+                        value={widget.heading_data}
+                        placeholder={widget.heading_data === "" ? "Heading name" : widget.heading_data}
                         onChange={(e) =>
                             updateWidget(widget.id,
                                 {
                                     "type": widget.type,
-                                    "size": widget.size,
-                                    "data": e.target.value,
+                                    "index": widget.index,
+                                    "link_title": widget.link_title,
+                                    "heading_size": widget.heading_size,
+                                    "heading_data": e.target.value,
+                                    "list_data": widget.list_data,
+                                    "paragraph_data": widget.paragraph_data,
+                                    "image_url": widget.image_url,
+                                    "link_data": widget.link_data,
                                     "id": widget.id
                                 })}
 
@@ -72,11 +85,17 @@ const HeadingWidget = ({widget, deleteWidget, updateWidget, preview}) => {
                                   updateWidget(widget.id,
                                       {
                                           "type": widget.type,
-                                          "size": e[0].value,
-                                          "data": widget.data,
+                                          "index": widget.index,
+                                          "link_title": widget.link_title,
+                                          "heading_size": e[0].value,
+                                          "heading_data": widget.heading_data,
+                                          "list_data": widget.list_data,
+                                          "paragraph_data": widget.paragraph_data,
+                                          "image_url": widget.image_url,
+                                          "link_data": widget.link_data,
                                           "id": widget.id
                                       })}
-                              placeholder={"Heading " + widget.size}/>
+                              placeholder={"Heading " + widget.heading_size}/>
                 </div>
                 <div className="widget-component-element">
                     <input
@@ -84,23 +103,23 @@ const HeadingWidget = ({widget, deleteWidget, updateWidget, preview}) => {
                 </div>
                 <div class="widget-component-element">
                     <h3>Preview</h3>
-                    {widget.size === 1 && <h1>{widget.data}</h1>}
-                    {widget.size === 2 && <h2>{widget.data}</h2>}
-                    {widget.size === 3 && <h3>{widget.data}</h3>}
-                    {widget.size === 4 && <h4>{widget.data}</h4>}
-                    {widget.size === 5 && <h5>{widget.data}</h5>}
-                    {widget.size === 6 && <h6>{widget.data}</h6>}
+                    {widget.heading_size === 1 && <h1>{widget.heading_data}</h1>}
+                    {widget.heading_size === 2 && <h2>{widget.heading_data}</h2>}
+                    {widget.heading_size === 3 && <h3>{widget.heading_data}</h3>}
+                    {widget.heading_size === 4 && <h4>{widget.heading_data}</h4>}
+                    {widget.heading_size === 5 && <h5>{widget.heading_data}</h5>}
+                    {widget.heading_size === 6 && <h6>{widget.heading_data}</h6>}
                 </div>
             </div>)
 
     } else return (
         <div >
-            {widget.size === 1 && <h1>{widget.data}</h1>}
-            {widget.size === 2 && <h2>{widget.data}</h2>}
-            {widget.size === 3 && <h3>{widget.data}</h3>}
-            {widget.size === 4 && <h4>{widget.data}</h4>}
-            {widget.size === 5 && <h5>{widget.data}</h5>}
-            {widget.size === 6 && <h6>{widget.data}</h6>}
+            {widget.heading_size === 1 && <h1>{widget.heading_data}</h1>}
+            {widget.heading_size === 2 && <h2>{widget.heading_data}</h2>}
+            {widget.heading_size === 3 && <h3>{widget.heading_data}</h3>}
+            {widget.heading_size === 4 && <h4>{widget.heading_data}</h4>}
+            {widget.heading_size === 5 && <h5>{widget.heading_data}</h5>}
+            {widget.heading_size === 6 && <h6>{widget.heading_data}</h6>}
         </div>
     )
 

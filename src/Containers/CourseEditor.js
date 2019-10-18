@@ -181,8 +181,10 @@ extends React.Component {
                 widgets = topicsWidgets;
             }
             store = createStore(widgetListReducer,
-                {widgets: widgets,
-                preview: true},
+                {widgets: widgets.sort(function(w1, w2) {
+                            return w1.index - w2.index;
+                        }),
+                preview: false},
                 window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
         }
 

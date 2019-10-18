@@ -1,6 +1,7 @@
 import React from 'react'
 import CourseService from "../services/CourseService";
 import WidgetService from "../services/WidgetService";
+import 'array.prototype.move';
 
 const initialState = {
     widgets: []
@@ -8,9 +9,24 @@ const initialState = {
 
 const widgetService = WidgetService.getInstance();
 
-const widgetListReducer = (state = initialState, action) => {
 
-    console.log(action)
+
+
+const widgetListReducer = (state = initialState, action) => {
+    let newState = Object.assign({}, state);
+
+    function swapWidgets (widgets, idx1, idx2){
+        let swappedArray = widgets.slice();
+
+        swappedArray[idx1] = widgets[idx2]
+        swappedArray[idx2] = widgets[idx1]
+
+        return swappedArray;
+
+    }
+
+
+
 
     switch (action.type) {
         case 'DELETE_WIDGET':
@@ -25,7 +41,7 @@ const widgetListReducer = (state = initialState, action) => {
                     {
                         type: 'HEADING',
                         size: 2,
-                        text: 'New Heading',
+                        data: 'New Heading',
                         id: (new Date()).getTime()
                     }
                 ],
@@ -33,6 +49,7 @@ const widgetListReducer = (state = initialState, action) => {
             }
 
         case 'UPDATE_WIDGET':
+
             return {
                 widgets: state.widgets.map(widget=> {
                     if (widget.id === action.widgetId) {
@@ -43,6 +60,20 @@ const widgetListReducer = (state = initialState, action) => {
         }),
                 preview: state.preview
                 };
+
+        case 'MOVE_WIDGET_UP':
+            let idxUp = state.widgets.indexOf(state.widgets.find(widget => widget.id === action.widgetId))
+            return {
+                widgets: swapWidgets(state.widgets, idxUp, idxUp - 1),
+                preview: false
+            };
+        case 'MOVE_WIDGET_DOWN':
+            let idxDown = state.widgets.indexOf(state.widgets.find(widget => widget.id === action.widgetId))
+
+            return {
+                widgets: swapWidgets(state.widgets, idxDown, idxDown + 1),
+                preview: false
+            };
         case 'FIND_ALL_WIDGETS_FOR_TOPIC':
             return {
                 widgets: widgetService.findWidgets(action.topicId),
@@ -56,6 +87,8 @@ const widgetListReducer = (state = initialState, action) => {
         default:
             return state
     }
+
+
 }
 
 export default widgetListReducer;

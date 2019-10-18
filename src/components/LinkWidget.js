@@ -16,25 +16,31 @@ const widgetOptions = [
     { label: "Link", value: "LINK" },
 ]
 
-const LinkWidget = ({widget, deleteWidget, updateWidget, preview}) => {
+const LinkWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveDown, isFirst, isLast}) => {
   if(!preview){
         return(<div className="container widget-container">
             <div className="navbar">
                 <div className="nav-header"><h2> Link widget </h2></div>
                 <div className="form-inline float-right">
-                    <button
-                        onClick={() => deleteWidget(widget.id)}
+                    <button style={isFirst ? {display: 'none'}: {}}
+                        onClick={() => moveUp(widget.id)}
                     ><TiArrowUpThick class="delete-btn" size={28}/></button>
-                    <button
-                        onClick={() => deleteWidget(widget.id)}
+                    <button style={isLast ? {display: 'none'}: {}}
+                        onClick={() => moveDown(widget.id)}
                     ><TiArrowDownThick class="delete-btn" size={28}/></button>
                     <Dropdown className="widget-dropdown" options={widgetOptions}
                               onChange={(e) =>
                                   updateWidget(widget.id,
                                       {
                                           "type": e[0].value,
-                                          "size": widget.size,
-                                          "data": widget.data,
+                                          "index": widget.index,
+                                          "link_title": widget.link_title,
+                                          "heading_size": widget.heading_size,
+                                          "heading_data": widget.heading_data,
+                                          "list_data": widget.list_data,
+                                          "paragraph_data": widget.paragraph_data,
+                                          "image_url": widget.image_url,
+                                          "link_data": widget.link_data,
                                           "id": widget.id
                                       }
                                   )} size={17} placeholder={widget.type}/>
@@ -47,30 +53,44 @@ const LinkWidget = ({widget, deleteWidget, updateWidget, preview}) => {
 
             <div className="widget-component-element">
                 <input
-                    value={widget.title}
-                    placeholder={widget.title === "" ? "Link URL" : widget.title}
+                    value={widget.link_title}
+                    placeholder={widget.title === "" ? "Link text" : widget.link_title}
                     onChange={(e) =>
                         updateWidget(widget.id,
                             {
                                 "type": widget.type,
-                                "size": widget.size,
-                                "data": e.target.value,
+                                "index": widget.index,
+                                "link_title": e.target.value,
+                                "heading_size": widget.heading_size,
+                                "heading_data": widget.heading_data,
+                                "list_data": widget.list_data,
+                                "paragraph_data": widget.paragraph_data,
+                                "image_url": widget.image_url,
+                                "link_data": widget.link_data,
                                 "id": widget.id
+
                             })}
 
                     className="form-control"/>
             </div>
             <div className="widget-component-element">
                 <input
-                    value={widget.data}
-                    placeholder={widget.data === "" ? "Link text" : widget.data}
+                    value={widget.link_data}
+                    placeholder={widget.link_data === "" ? "Link URL" : widget.link_data}
                     onChange={(e) =>
                         updateWidget(widget.id,
                             {
                                 "type": widget.type,
-                                "size": widget.size,
-                                "data": e.target.value,
+                                "index": widget.index,
+                                "link_title": widget.link_title,
+                                "heading_size": widget.heading_size,
+                                "heading_data": widget.heading_data,
+                                "list_data": widget.list_data,
+                                "paragraph_data": widget.paragraph_data,
+                                "image_url": widget.image_url,
+                                "link_data": e.target.value,
                                 "id": widget.id
+
                             })}
 
                     className="form-control"/>
@@ -81,12 +101,12 @@ const LinkWidget = ({widget, deleteWidget, updateWidget, preview}) => {
             </div>
             <div className="widget-component-element">
                 <h3>Preview</h3>
-                <a href={widget.data}>{widget.title}</a>
+                <a href={widget.link_data}>{widget.link_title}</a>
             </div>
         </div>)
     } else {
         return(<div>
-            <a href={widget.data}>{widget.title}</a>
+            <a href={widget.link_data}>{widget.link_title}</a>
         </div>)
     }
 }

@@ -10,6 +10,7 @@ const stateToPropertyMapper = state => {
     }
 }
 
+
 const dispatcherToPropertyMapper = dispatch => {
     return {
         addWidget: () => {
@@ -25,6 +26,12 @@ const dispatcherToPropertyMapper = dispatch => {
             dispatch({
                 type: 'FIND_ALL_WIDGETS_FOR_TOPIC', topicId: id
             })
+        },
+        moveUp: (id) => {
+            dispatch({type: 'MOVE_WIDGET_UP', widgetId: id})
+        },
+        moveDown: (id) => {
+            dispatch({type: 'MOVE_WIDGET_DOWN', widgetId: id})
         },
         findAllWidgets: () => {
             dispatch({
@@ -47,55 +54,3 @@ const WidgetListContainer =
 export default WidgetListContainer;
 
 
-
-
-
-// import React from 'react'
-//
-// import WidgetListComponent from "../components/WidgetListComponent";
-// import {connect} from 'react-redux'
-//
-// const stateToPropertyMapper = state => {
-//     return {
-//         widgets: state.widgets
-//     }
-// }
-//
-
-//
-// const WidgetListContainer =
-//     connect(stateToPropertyMapper,
-//         dispatcherToPropertyMapper)
-//     (WidgetListComponent)
-//
-// export default WidgetListContainer;
-
-//  const createWidget = () => {
-//     return {
-//         type: 'CREATE_WIDGET'
-//     }
-// }
-//
-//  const deleteWidget = () => {
-//     return {
-//         type: 'DELETE_WIDGET'
-//     }
-// }
-//
-//  const updateWidget = (id) => {
-//     return {
-//         type: 'UPDATE_WIDGET'
-//     }
-// }
-//
-//  const findAllWidgetsForTopic = () => {
-//     return {
-//         type: 'FIND_ALL_WIDGETS_FOR_TOPIC'
-//     }
-// }
-//
-//  const findAllWidgets = () => {
-//     return {
-//         type: 'FIND_ALL_WIDGETS'
-//     }
-// }

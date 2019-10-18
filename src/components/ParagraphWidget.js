@@ -12,25 +12,31 @@ const widgetOptions = [
     { label: "Link", value: "LINK" },
 ]
 
-const ParagraphWidget = ({widget, deleteWidget, updateWidget, preview}) => {
+const ParagraphWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveDown, isFirst, isLast}) => {
     if(!preview){
         return (<div className="container widget-container">
             <div className="navbar">
                 <div className="nav-header"><h2> Paragraph widget </h2></div>
                 <div className="form-inline float-right">
-                    <button
-                        onClick={() => deleteWidget(widget.id)}
+                    <button style={isFirst ? {display: 'none'}: {}}
+                        onClick={() => moveUp(widget.id)}
                     ><TiArrowUpThick class="delete-btn" size={28}/></button>
-                    <button
-                        onClick={() => deleteWidget(widget.id)}
+                    <button style={isLast ? {display: 'none'}: {}}
+                        onClick={() => moveDown(widget.id)}
                     ><TiArrowDownThick class="delete-btn" size={28}/></button>
                     <Dropdown className="widget-dropdown" options={widgetOptions}
                               onChange={(e) =>
                                   updateWidget(widget.id,
                                       {
                                           "type": e[0].value,
-                                          "size": widget.size,
-                                          "data": widget.data,
+                                          "index": widget.index,
+                                          "link_title": widget.link_title,
+                                          "heading_size": widget.heading_size,
+                                          "heading_data": widget.heading_data,
+                                          "list_data": widget.list_data,
+                                          "paragraph_data": widget.paragraph_data,
+                                          "image_url": widget.image_url,
+                                          "link_data": widget.link_data,
                                           "id": widget.id
                                       }
                                   )} size={17} placeholder={widget.type}/>
@@ -43,14 +49,20 @@ const ParagraphWidget = ({widget, deleteWidget, updateWidget, preview}) => {
 
             <div className="widget-component-element">
             <textarea
-                value={widget.data}
-                placeholder={widget.data === "" ? "Paragraph text" : widget.data}
+                value={widget.paragraph_data}
+                placeholder={widget.paragraph_data === "" ? "Paragraph text" : widget.paragraph_data}
                 onChange={(e) =>
                     updateWidget(widget.id,
                         {
                             "type": widget.type,
-                            "size": widget.size,
-                            "data": e.target.value,
+                            "index": widget.index,
+                            "link_title": widget.link_title,
+                            "heading_size": widget.heading_size,
+                            "heading_data": widget.heading_data,
+                            "list_data": widget.list_data,
+                            "paragraph_data": e.target.value,
+                            "image_url": widget.image_url,
+                            "link_data": widget.link_data,
                             "id": widget.id
                         })}
 
@@ -62,12 +74,12 @@ const ParagraphWidget = ({widget, deleteWidget, updateWidget, preview}) => {
             </div>
             <div className="widget-component-element">
                 <h3>Preview</h3>
-                <p>{widget.data}</p>
+                <p>{widget.paragraph_data}</p>
             </div>
         </div>)
     } else {
         return ( <div>
-            <p>{widget.data}</p>
+            <p>{widget.paragraph_data}</p>
         </div>)
     }
 }

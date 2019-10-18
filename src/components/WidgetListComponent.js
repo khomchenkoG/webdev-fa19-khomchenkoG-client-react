@@ -8,7 +8,11 @@ import '../CSS/widgetList.css'
 import {FaPlusCircle} from 'react-icons/fa';
 import Switch from "react-switch";
 
-const WidgetListComponent = ({widgets, preview, addWidget, deleteWidget, updateWidget, switchPreview}) => {
+
+const WidgetListComponent = ({
+                                 widgets, preview, addWidget, deleteWidget, updateWidget,
+                                 switchPreview, moveUp, moveDown
+                             }) => {
     let header;
     if (preview) {
         header = "Preview"
@@ -36,31 +40,61 @@ const WidgetListComponent = ({widgets, preview, addWidget, deleteWidget, updateW
 
 
                 {
-                    widgets.map(widget =>
-                        <div>
-                            {widget.type === "LIST" && <ListWidget widget={widget}
-                                                                   deleteWidget={deleteWidget}
-                                                                   updateWidget={updateWidget}
-                                                                   preview={preview}/>}
-                            {widget.type === "HEADING" && <HeadingWidget widget={widget}
-                                                                         deleteWidget={deleteWidget}
-                                                                         updateWidget={updateWidget}
-                                                                         preview={preview}/>}
-                            {widget.type === "PARAGRAPH" && <ParagraphWidget widget={widget}
+
+                    widgets.map(widget => {
+                        let isFirst = widgets.indexOf(widgets
+                            .find(widget1 => widget1.id === widget.id)) == 0;
+                        let isLast = widgets.indexOf(widgets
+                            .find(widget1 => widget1.id === widget.id)) == (widgets.length - 1);
+                        return (
+
+                            <div>
+                                {widget.type === "LIST" && <ListWidget widget={widget}
+                                                                       deleteWidget={deleteWidget}
+                                                                       updateWidget={updateWidget}
+                                                                       preview={preview}
+                                                                       moveUp={moveUp}
+                                                                       moveDown={moveDown}
+                                                                       isFirst={isFirst}
+                                                                       isLast={isLast}/>}
+                                {widget.type === "HEADING" && <HeadingWidget widget={widget}
                                                                              deleteWidget={deleteWidget}
                                                                              updateWidget={updateWidget}
-                                                                             preview={preview}/>}
-                            {widget.type === "IMAGE" && <ImageWidget widget={widget}
-                                                                     deleteWidget={deleteWidget}
-                                                                     updateWidget={updateWidget}
-                                                                     preview={preview}/>}
-                            {widget.type === "LINK" && <LinkWidget widget={widget}
-                                                                   deleteWidget={deleteWidget}
-                                                                   updateWidget={updateWidget}
-                                                                   preview={preview}/>}
-                        </div>
-                    )
+                                                                             preview={preview}
+                                                                             moveUp={moveUp}
+                                                                             moveDown={moveDown}
+                                                                             isFirst={isFirst}
+                                                                             isLast={isLast}/>}
+                                {widget.type === "PARAGRAPH" && <ParagraphWidget widget={widget}
+                                                                                 deleteWidget={deleteWidget}
+                                                                                 updateWidget={updateWidget}
+                                                                                 preview={preview}
+                                                                                 moveUp={moveUp}
+                                                                                 moveDown={moveDown}
+                                                                                 isFirst={isFirst}
+                                                                                 isLast={isLast}/>}
+                                {widget.type === "IMAGE" && <ImageWidget widget={widget}
+                                                                         deleteWidget={deleteWidget}
+                                                                         updateWidget={updateWidget}
+                                                                         preview={preview}
+                                                                         moveUp={moveUp}
+                                                                         moveDown={moveDown}
+                                                                         isFirst={isFirst}
+                                                                         isLast={isLast}/>}
+                                {widget.type === "LINK" && <LinkWidget widget={widget}
+                                                                       deleteWidget={deleteWidget}
+                                                                       updateWidget={updateWidget}
+                                                                       preview={preview}
+                                                                       moveUp={moveUp}
+                                                                       moveDown={moveDown}
+                                                                       isFirst={isFirst}
+                                                                       isLast={isLast}/>}
+                            </div>
+                        )
+                    })
+
                 }
+
                 <button className="add-btn float-right"
                         onClick={addWidget}
                 ><FaPlusCircle className="add-btn" size={40}/></button>
