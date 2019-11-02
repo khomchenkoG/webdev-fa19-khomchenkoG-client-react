@@ -13,6 +13,7 @@ import widgetListReducer from "../reducers/WidgetListReducer";
 import WidgetService from "../services/WidgetService";
 
 let courseService = CourseService.getInstance();
+let widgetService = WidgetService.getInstance();
 
 
 const EditorContext = React.createContext(null)
@@ -35,6 +36,7 @@ extends React.Component {
             moduleId: courseService.findInitialItems(props.match.params.courseId).firstModule,
             lessonId: courseService.findInitialItems(props.match.params.courseId).firstLesson,
             topicId: courseService.findInitialItems(props.match.params.courseId).firstTopic,
+            widgets: null
         }
     }
 
@@ -169,24 +171,37 @@ extends React.Component {
 
     }
 
+    // componentDidMount() {
+    //     let widgets = widgetService.findWidgets()
+    //     this.setState(prevState => ({
+    //         course: prevState.course,
+    //         moduleId: prevState.moduleId,
+    //         lessonId: prevState.lessonId,
+    //         topicId: prevState.topicId,
+    //         widgets: widgets
+    //     }))
+    // }
 
 
     render() {
         let args = this.setUpView();
-        let store = createStore(widgetListReducer);
-        if (this.state.topicId != null){
-            let topicsWidgets = args.topics.find(topic => topic.id === this.state.topicId).widgets;
-            let widgets = [];
-            if (topicsWidgets.length > 0){
-                widgets = topicsWidgets;
-            }
-            store = createStore(widgetListReducer,
-                {widgets: widgets.sort(function(w1, w2) {
-                            return w1.index - w2.index;
-                        }),
+        //let store = createStore(widgetListReducer);
+        let store = createStore(widgetListReducer,
+            {widgets: [],
                 preview: false},
-                window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
-        }
+            window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+        // if (this.state.widgets != null){
+        //     let topicsWidgets = widgetService.findWidgets();
+        //         ////args.topics.find(topic => topic.id === this.state.topicId).widgets;
+        //     let widgets = this.state.widgets;
+        //     // if (topicsWidgets.length > 0){
+        //     //     widgets = topicsWidgets;
+        //     // }
+        //     store = createStore(widgetListReducer,
+        //         {widgets: [],
+        //         preview: false},
+        //         window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+        // }
 
         return (
             <div class="container-fluid">

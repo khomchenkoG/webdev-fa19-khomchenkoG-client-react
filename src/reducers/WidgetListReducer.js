@@ -29,44 +29,53 @@ const widgetListReducer = (state = initialState, action) => {
 
 
     switch (action.type) {
+        case "FIND_ALL_WIDGETS":
+            return {
+                widgets: action.widgets,
+                preview: state.preview
+            }
         case 'DELETE_WIDGET':
             return {
-                widgets: state.widgets.filter(widget => widget.id !== action.widgetId),
+                widgets: action.widgets,
                 preview: state.preview
             }
         case 'CREATE_WIDGET':
             return {
-                widgets: [
-                    ...state.widgets,
-                    {
-                        type: "HEADING",
-                        index: 1,
-                        link_title: "",
-                        heading_size: 1,
-                        heading_data: "",
-                        list_data: "",
-                        paragraph_data: "",
-                        image_url: "",
-                        link_data: "",
-                        ordered: true,
-                        id: (new Date().getTime())
-                    }
-                ],
+                // widgets: [
+                //     ...state.widgets,
+                //     {
+                //         type: "HEADING",
+                //         index: 1,
+                //         link_title: "",
+                //         heading_size: 1,
+                //         heading_data: "",
+                //         list_data: "",
+                //         paragraph_data: "",
+                //         image_url: "",
+                //         link_data: "",
+                //         ordered: true,
+                //         id: (new Date().getTime())
+                //     }
+                // ],
+                widgets: action.widgets,
                 preview: state.preview
             }
 
         case 'UPDATE_WIDGET':
 
             return {
-                widgets: state.widgets.map(widget=> {
-                    if (widget.id === action.widgetId) {
-                        return action.widget;
-                    } else {
-                        return widget
-                    }
-        }),
+                widgets: action.widgets,
                 preview: state.preview
-                };
+            }
+        //         widgets: state.widgets.map(widget=> {
+        //             if (widget.id === action.widgetId) {
+        //                 return action.widget;
+        //             } else {
+        //                 return widget
+        //             }
+        // }),
+        //         preview: state.preview
+        //         };
 
         case 'MOVE_WIDGET_UP':
             let idxUp = state.widgets.indexOf(state.widgets.find(widget => widget.id === action.widgetId))

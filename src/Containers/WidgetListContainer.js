@@ -1,7 +1,9 @@
 import React from 'react'
 import WidgetListComponent from "../components/WidgetListComponent";
 import {connect} from 'react-redux'
-import CourseEditor from "./CourseEditor";
+import WidgetService from "../services/WidgetService";
+
+const service = WidgetService.getInstance();
 
 const stateToPropertyMapper = state => {
     return {
@@ -10,17 +12,41 @@ const stateToPropertyMapper = state => {
     }
 }
 
+// sort(function(w1, w2) {
+//     return w1.index - w2.index;
+// })
+
 
 const dispatcherToPropertyMapper = dispatch => {
     return {
+        loadWidgets: () => {
+            service
+                .findAllWidgets()
+                .then(widgets => dispatch({
+                    type: "FIND_ALL_WIDGETS",
+                    widgets: widgets
+                }))
+        },
         addWidget: () => {
-            dispatch({type: 'CREATE_WIDGET'})
+            service.createWidget()
+                .then(widgets => dispatch({
+                    type: "CREATE_WIDGET",
+                    widgets: widgets
+                }))
         },
         deleteWidget: (id) => {
-            dispatch({type: 'DELETE_WIDGET', widgetId: id})
+            service.deleteWidget(id)
+                .then(widgets => dispatch({
+                    type: "DELETE_WIDGET",
+                    widgets: widgets
+                }))
         },
         updateWidget: (id, widget) => {
-            dispatch({type: 'UPDATE_WIDGET', widgetId: id, widget: widget})
+            service.updateWidget(id, widget)
+            .then(widgets => dispatch({
+                type: "UPDATE_WIDGET",
+                widgets: widgets
+            }))
         },
         findAllWidgetsForTopic: (id) => {
             dispatch({

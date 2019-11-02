@@ -9,107 +9,112 @@ import {FaPlusCircle} from 'react-icons/fa';
 import Switch from "react-switch";
 
 
-const WidgetListComponent = ({
-                                 widgets, preview, addWidget, deleteWidget, updateWidget,
-                                 switchPreview, moveUp, moveDown
-                             }) => {
-    let header;
-    if (preview) {
-        header = "Preview"
-    } else {
-        header = "Widget List"
+class WidgetListComponent extends React.Component {
+    constructor(props) {
+        super(props)
+        this.props.loadWidgets();
     }
 
-    if (widgets.length > 0) {
-        return (<div>
-            <div className="navbar">
-                <div className="nav-header"><h2>{header}</h2></div>
-                <div className="form-inline float-right">
-                    <div>
-                        <h5 style={{'margin-right': 10}}> Preview </h5>
+    // let header;
+    // if (preview) {
+    //     header = "Preview"
+    // } else {
+    //     header = "Widget List"
+    // }
+
+    render () {
+        if (this.props.widgets.length > 0) {
+            return (<div>
+                <div className="navbar">
+                    <div className="nav-header"><h2>{this.props.preview ? "Preview": "Widget List"}</h2></div>
+                    <div className="form-inline float-right">
+                        <div>
+                            <h5 style={{'margin-right': 10}}> Preview </h5>
+                        </div>
+                        <div>
+                            <Switch onChange={this.props.switchPreview} checked={this.props.preview}/>
+                        </div>
+                        <button className="btn-primary"
+                                style={{'margin-left': 10, 'margin-bottom': 7, 'background-color': 'green'}}> Save
+                        </button>
                     </div>
-                    <div>
-                        <Switch onChange={switchPreview} checked={preview}/>
-                    </div>
-                    <button className="btn-primary"
-                            style={{'margin-left': 10, 'margin-bottom': 7, 'background-color': 'green'}}> Save
-                    </button>
                 </div>
-            </div>
-            <div className="container">
+                <div className="container">
 
 
-                {
+                    {
 
-                    widgets.map(widget => {
-                        let isFirst = widgets.indexOf(widgets
-                            .find(widget1 => widget1.id === widget.id)) == 0;
-                        let isLast = widgets.indexOf(widgets
-                            .find(widget1 => widget1.id === widget.id)) == (widgets.length - 1);
-                        return (
+                        this.props.widgets.map(widget => {
+                            let isFirst = this.props.widgets.indexOf(this.props.widgets
+                                .find(widget1 => widget1.id === widget.id)) === 0;
+                            let isLast = this.props.widgets.indexOf(this.props.widgets
+                                .find(widget1 => widget1.id === widget.id)) === (this.props.widgets.length - 1);
+                            return (
 
-                            <div>
-                                {widget.type === "LIST" && <ListWidget widget={widget}
-                                                                       deleteWidget={deleteWidget}
-                                                                       updateWidget={updateWidget}
-                                                                       preview={preview}
-                                                                       moveUp={moveUp}
-                                                                       moveDown={moveDown}
-                                                                       isFirst={isFirst}
-                                                                       isLast={isLast}/>}
-                                {widget.type === "HEADING" && <HeadingWidget widget={widget}
-                                                                             deleteWidget={deleteWidget}
-                                                                             updateWidget={updateWidget}
-                                                                             preview={preview}
-                                                                             moveUp={moveUp}
-                                                                             moveDown={moveDown}
-                                                                             isFirst={isFirst}
-                                                                             isLast={isLast}/>}
-                                {widget.type === "PARAGRAPH" && <ParagraphWidget widget={widget}
-                                                                                 deleteWidget={deleteWidget}
-                                                                                 updateWidget={updateWidget}
-                                                                                 preview={preview}
-                                                                                 moveUp={moveUp}
-                                                                                 moveDown={moveDown}
+                                <div>
+                                    {widget.type === "LIST" && <ListWidget widget={widget}
+                                                                           deleteWidget={this.props.deleteWidget}
+                                                                           updateWidget={this.props.updateWidget}
+                                                                           preview={this.props.preview}
+                                                                           moveUp={this.props.moveUp}
+                                                                           moveDown={this.props.moveDown}
+                                                                           isFirst={isFirst}
+                                                                           isLast={isLast}/>}
+                                    {widget.type === "HEADING" && <HeadingWidget widget={widget}
+                                                                                 deleteWidget={this.props.deleteWidget}
+                                                                                 updateWidget={this.props.updateWidget}
+                                                                                 preview={this.props.preview}
+                                                                                 moveUp={this.props.moveUp}
+                                                                                 moveDown={this.props.moveDown}
                                                                                  isFirst={isFirst}
                                                                                  isLast={isLast}/>}
-                                {widget.type === "IMAGE" && <ImageWidget widget={widget}
-                                                                         deleteWidget={deleteWidget}
-                                                                         updateWidget={updateWidget}
-                                                                         preview={preview}
-                                                                         moveUp={moveUp}
-                                                                         moveDown={moveDown}
-                                                                         isFirst={isFirst}
-                                                                         isLast={isLast}/>}
-                                {widget.type === "LINK" && <LinkWidget widget={widget}
-                                                                       deleteWidget={deleteWidget}
-                                                                       updateWidget={updateWidget}
-                                                                       preview={preview}
-                                                                       moveUp={moveUp}
-                                                                       moveDown={moveDown}
-                                                                       isFirst={isFirst}
-                                                                       isLast={isLast}/>}
-                            </div>
-                        )
-                    })
+                                    {widget.type === "PARAGRAPH" && <ParagraphWidget widget={widget}
+                                                                                     deleteWidget={this.props.deleteWidget}
+                                                                                     updateWidget={this.props.updateWidget}
+                                                                                     preview={this.props.preview}
+                                                                                     moveUp={this.props.moveUp}
+                                                                                     moveDown={this.props.moveDown}
+                                                                                     isFirst={isFirst}
+                                                                                     isLast={isLast}/>}
+                                    {widget.type === "IMAGE" && <ImageWidget widget={widget}
+                                                                             deleteWidget={this.props.deleteWidget}
+                                                                             updateWidget={this.props.updateWidget}
+                                                                             preview={this.props.preview}
+                                                                             moveUp={this.props.moveUp}
+                                                                             moveDown={this.props.moveDown}
+                                                                             isFirst={isFirst}
+                                                                             isLast={isLast}/>}
+                                    {widget.type === "LINK" && <LinkWidget widget={widget}
+                                                                           deleteWidget={this.props.deleteWidget}
+                                                                           updateWidget={this.props.updateWidget}
+                                                                           preview={this.props.preview}
+                                                                           moveUp={this.props.moveUp}
+                                                                           moveDown={this.props.moveDown}
+                                                                           isFirst={isFirst}
+                                                                           isLast={isLast}/>}
+                                </div>
+                            )
+                        })
 
-                }
+                    }
 
+                    <button className="add-btn float-right"
+                            onClick={this.props.addWidget}
+                    ><FaPlusCircle className="add-btn" size={40}/></button>
+
+                </div>
+            </div>)
+        } else return (
+            <div>
+                <h2>Widget list</h2>
                 <button className="add-btn float-right"
-                        onClick={addWidget}
+                        onClick={this.props.addWidget}
                 ><FaPlusCircle className="add-btn" size={40}/></button>
-
             </div>
-        </div>)
-    } else return (
-        <div>
-            <h2>Widget list</h2>
-            <button className="add-btn float-right"
-                    onClick={addWidget}
-            ><FaPlusCircle className="add-btn" size={40}/></button>
-        </div>
 
-    )
+        )
+    }
+
 }
 
 
