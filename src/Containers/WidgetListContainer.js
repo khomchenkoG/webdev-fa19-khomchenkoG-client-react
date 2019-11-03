@@ -8,7 +8,8 @@ const service = WidgetService.getInstance();
 const stateToPropertyMapper = state => {
     return {
         widgets: state.widgets,
-        preview: state.preview
+        preview: state.preview,
+        topicId: state.topicId
     }
 }
 
@@ -34,24 +35,19 @@ const dispatcherToPropertyMapper = dispatch => {
                     widgets: widgets
                 }))
         },
-        deleteWidget: (id) => {
-            service.deleteWidget(id)
+        deleteWidget: (widgetId) => {
+            service.deleteWidget(this.state.topicId, widgetId)
                 .then(widgets => dispatch({
                     type: "DELETE_WIDGET",
                     widgets: widgets
                 }))
         },
-        updateWidget: (id, widget) => {
-            service.updateWidget(id, widget)
+        updateWidget: (topicId, widgetId, widget) => {
+            service.updateWidget(topicId, widgetId, widget)
             .then(widgets => dispatch({
                 type: "UPDATE_WIDGET",
                 widgets: widgets
             }))
-        },
-        findAllWidgetsForTopic: (id) => {
-            dispatch({
-                type: 'FIND_ALL_WIDGETS_FOR_TOPIC', topicId: id
-            })
         },
         moveUp: (id) => {
             dispatch({type: 'MOVE_WIDGET_UP', widgetId: id})
@@ -59,11 +55,6 @@ const dispatcherToPropertyMapper = dispatch => {
         moveDown: (id) => {
             dispatch({type: 'MOVE_WIDGET_DOWN', widgetId: id})
         },
-        findAllWidgets: () => {
-            dispatch({
-                type: 'FIND_ALL_WIDGETS'
-            })
-            },
         switchPreview:()  => {
             dispatch({
                 type: 'SWITCH_PREVIEW'

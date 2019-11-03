@@ -22,11 +22,11 @@ class WidgetListComponent extends React.Component {
     //     header = "Widget List"
     // }
 
-    render () {
+    render() {
         if (this.props.widgets.length > 0) {
             return (<div>
                 <div className="navbar">
-                    <div className="nav-header"><h2>{this.props.preview ? "Preview": "Widget List"}</h2></div>
+                    <div className="nav-header"><h2>{this.props.preview ? "Preview" : "Widget List"}</h2></div>
                     <div className="form-inline float-right">
                         <div>
                             <h5 style={{'margin-right': 10}}> Preview </h5>
@@ -59,7 +59,8 @@ class WidgetListComponent extends React.Component {
                                                                            moveUp={this.props.moveUp}
                                                                            moveDown={this.props.moveDown}
                                                                            isFirst={isFirst}
-                                                                           isLast={isLast}/>}
+                                                                           isLast={isLast}
+                                                                           topicId={this.props.topicId}/>}
                                     {widget.type === "HEADING" && <HeadingWidget widget={widget}
                                                                                  deleteWidget={this.props.deleteWidget}
                                                                                  updateWidget={this.props.updateWidget}
@@ -67,7 +68,8 @@ class WidgetListComponent extends React.Component {
                                                                                  moveUp={this.props.moveUp}
                                                                                  moveDown={this.props.moveDown}
                                                                                  isFirst={isFirst}
-                                                                                 isLast={isLast}/>}
+                                                                                 isLast={isLast}
+                                                                                 topicId={this.props.topicId}/>}
                                     {widget.type === "PARAGRAPH" && <ParagraphWidget widget={widget}
                                                                                      deleteWidget={this.props.deleteWidget}
                                                                                      updateWidget={this.props.updateWidget}
@@ -75,7 +77,8 @@ class WidgetListComponent extends React.Component {
                                                                                      moveUp={this.props.moveUp}
                                                                                      moveDown={this.props.moveDown}
                                                                                      isFirst={isFirst}
-                                                                                     isLast={isLast}/>}
+                                                                                     isLast={isLast}
+                                                                                     topicId={this.props.topicId}/>}
                                     {widget.type === "IMAGE" && <ImageWidget widget={widget}
                                                                              deleteWidget={this.props.deleteWidget}
                                                                              updateWidget={this.props.updateWidget}
@@ -83,7 +86,8 @@ class WidgetListComponent extends React.Component {
                                                                              moveUp={this.props.moveUp}
                                                                              moveDown={this.props.moveDown}
                                                                              isFirst={isFirst}
-                                                                             isLast={isLast}/>}
+                                                                             isLast={isLast}
+                                                                             topicId={this.props.topicId}/>}
                                     {widget.type === "LINK" && <LinkWidget widget={widget}
                                                                            deleteWidget={this.props.deleteWidget}
                                                                            updateWidget={this.props.updateWidget}
@@ -91,7 +95,8 @@ class WidgetListComponent extends React.Component {
                                                                            moveUp={this.props.moveUp}
                                                                            moveDown={this.props.moveDown}
                                                                            isFirst={isFirst}
-                                                                           isLast={isLast}/>}
+                                                                           isLast={isLast}
+                                                                           topicId={this.props.topicId}/>}
                                 </div>
                             )
                         })
@@ -99,7 +104,7 @@ class WidgetListComponent extends React.Component {
                     }
 
                     <button className="add-btn float-right"
-                            onClick={this.props.addWidget}
+                            onClick={this.props.addWidget()}
                     ><FaPlusCircle className="add-btn" size={40}/></button>
 
                 </div>
@@ -108,7 +113,7 @@ class WidgetListComponent extends React.Component {
             <div>
                 <h2>Widget list</h2>
                 <button className="add-btn float-right"
-                        onClick={this.props.addWidget}
+                        onClick={this.props.addWidget()}
                 ><FaPlusCircle className="add-btn" size={40}/></button>
             </div>
 

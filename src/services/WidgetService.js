@@ -21,8 +21,6 @@ export default class WidgetService {
     }
 
 
-    createWidget(topicId, widget) {
-    }
 
     async findAllWidgets(){
         return fetch("http://localhost:8080/api/widgets")
@@ -65,7 +63,7 @@ export default class WidgetService {
     findWidget(widgetId) {
     }
 
-    updateWidget(widgetId, widget) {
+    updateWidget(topicId, widgetId, widget) {
         return fetch("http://localhost:8080/api/widgets/"+ widgetId, {
             method: 'PUT',
             headers: {
@@ -88,7 +86,7 @@ export default class WidgetService {
 
     }
 
-    deleteWidget(widgetId) {
+    deleteWidget(topicId, widgetId) {
         return fetch("http://localhost:8080/api/widgets/"+ widgetId, {
             method: 'DELETE'})
             .then(response => response.json())

@@ -8,8 +8,6 @@ import {TiArrowUpThick} from 'react-icons/ti';
 import {FaPlusCircle} from 'react-icons/fa';
 
 
-
-
 const widgetOptions = [
     { label: "Heading", value: "HEADING" },
     { label: "Paragraph", value: "PARAGRAPH" },
@@ -21,7 +19,7 @@ const sizeOptions = [{ label: "Heading 1", value: 1 },
     { label: "Heading 2", value: 2 },
     { label: "Heading 3", value: 3 },]
 
-const HeadingWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveDown, isFirst, isLast}) => {
+const HeadingWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveDown, isFirst, isLast, topicId}) => {
 
     if (!preview){
         return (
@@ -30,14 +28,14 @@ const HeadingWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, mov
                     <div className="nav-header"><h2> Heading widget </h2></div>
                     <div className="form-inline float-right">
                         <button style={isFirst ? {display: 'none'}: {}}
-                            onClick={() => moveUp(widget.id)}
+                            onClick={() => moveUp(topicId, widget.id)}
                         ><TiArrowUpThick class="delete-btn" size={28}/></button>
                         <button style={isLast ? {display: 'none'}: {}}
-                            onClick={() => moveDown(widget.id)}
+                            onClick={() => moveDown(topicId, widget.id)}
                         ><TiArrowDownThick class="delete-btn" size={28}/></button>
                         <Dropdown className="widget-dropdown" options={widgetOptions}
                                   onChange={(e) =>
-                                      updateWidget(widget.id,
+                                      updateWidget(topicId, widget.id,
                                           {
                                               "type": e[0].value,
                                               "index": widget.index,
@@ -52,7 +50,7 @@ const HeadingWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, mov
                                           }
                                       )} size={17} placeholder={widget.type}/>
                         <button className="btn"
-                                onClick={() => deleteWidget(widget.id)}
+                                onClick={() => deleteWidget(topicId, widget.id)}
                         ><FaTimes class="delete-btn" size={28}/></button>
 
                     </div>
@@ -63,7 +61,7 @@ const HeadingWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, mov
                         value={widget.heading_data}
                         placeholder={widget.heading_data === "" ? "Heading name" : widget.heading_data}
                         onChange={(e) =>
-                            updateWidget(widget.id,
+                            updateWidget(topicId, widget.id,
                                 {
                                     "type": widget.type,
                                     "index": widget.index,
@@ -82,7 +80,7 @@ const HeadingWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, mov
                 <div class="widget-component-element">
                     <Dropdown options={sizeOptions}
                               onChange={(e) =>
-                                  updateWidget(widget.id,
+                                  updateWidget(topicId,widget.id,
                                       {
                                           "type": widget.type,
                                           "index": widget.index,

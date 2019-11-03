@@ -188,7 +188,8 @@ extends React.Component {
         //let store = createStore(widgetListReducer);
         let store = createStore(widgetListReducer,
             {widgets: [],
-                preview: false},
+                preview: false,
+            toppicId: this.state.topicId},
             window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
         // if (this.state.widgets != null){
         //     let topicsWidgets = widgetService.findWidgets();
