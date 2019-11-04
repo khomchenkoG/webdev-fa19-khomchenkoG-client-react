@@ -11,6 +11,8 @@ import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import widgetListReducer from "../reducers/WidgetListReducer";
 import WidgetService from "../services/WidgetService";
+import WidgetListComponent from "../components/WidgetListComponent";
+import dispatcherToPropertyMapper from '../Containers/WidgetListContainer'
 
 let courseService = CourseService.getInstance();
 let widgetService = WidgetService.getInstance();
@@ -151,8 +153,7 @@ extends React.Component {
             moduleId: prevState.moduleId,
             lessonId: prevState.lessonId,
             topicId: curTopicId,
-            widgetService: new WidgetService(this.state.course.id, prevState.moduleId,
-                prevState.lessonId, curTopicId)
+            widgetService: prevState.widgetService
         }))
 
     }
@@ -171,16 +172,6 @@ extends React.Component {
 
     }
 
-    // componentDidMount() {
-    //     let widgets = widgetService.findWidgets()
-    //     this.setState(prevState => ({
-    //         course: prevState.course,
-    //         moduleId: prevState.moduleId,
-    //         lessonId: prevState.lessonId,
-    //         topicId: prevState.topicId,
-    //         widgets: widgets
-    //     }))
-    // }
 
 
     render() {
@@ -189,8 +180,15 @@ extends React.Component {
         let store = createStore(widgetListReducer,
             {widgets: [],
                 preview: false,
-            toppicId: this.state.topicId},
+            topicId: this.state.topicId},
             window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+        widgetService
+            .findAllWidgets(this.state.topicId)
+            .then(widgets => store.dispatch({
+                type: "FIND_ALL_WIDGETS",
+                widgets: widgets
+            }))
+
         // if (this.state.widgets != null){
         //     let topicsWidgets = widgetService.findWidgets();
         //         ////args.topics.find(topic => topic.id === this.state.topicId).widgets;

@@ -10,10 +10,12 @@ import Switch from "react-switch";
 
 
 class WidgetListComponent extends React.Component {
+
     constructor(props) {
         super(props)
-        this.props.loadWidgets();
+        this.props.loadWidgets(this.props.topicId);
     }
+
 
     // let header;
     // if (preview) {
@@ -22,7 +24,12 @@ class WidgetListComponent extends React.Component {
     //     header = "Widget List"
     // }
 
+    topicChanged (topicId){
+        this.props.loadWidgets(topicId)
+    }
+
     render() {
+
         if (this.props.widgets.length > 0) {
             return (<div>
                 <div className="navbar">
@@ -104,7 +111,7 @@ class WidgetListComponent extends React.Component {
                     }
 
                     <button className="add-btn float-right"
-                            onClick={this.props.addWidget()}
+                            onClick={() => this.props.addWidget(this.props.topicId)}
                     ><FaPlusCircle className="add-btn" size={40}/></button>
 
                 </div>
@@ -113,7 +120,7 @@ class WidgetListComponent extends React.Component {
             <div>
                 <h2>Widget list</h2>
                 <button className="add-btn float-right"
-                        onClick={this.props.addWidget()}
+                        onClick={() => this.props.addWidget(this.props.topicId)}
                 ><FaPlusCircle className="add-btn" size={40}/></button>
             </div>
 
