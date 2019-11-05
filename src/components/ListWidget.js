@@ -16,7 +16,7 @@ const widgetOptions = [
 const orderOptions = [{ label: "Ordered", value: true },
     { label: "Unordered", value: false },]
 
-const ListWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveDown, isFirst, isLast}) => {
+const ListWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveDown, isFirst, isLast, topicId}) => {
     if (!preview){
         return ( <div className="container widget-container">
             <div className="navbar">
@@ -30,7 +30,7 @@ const ListWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveDo
                     ><TiArrowDownThick class="delete-btn" size={28}/></button>
                     <Dropdown className="widget-dropdown" options={widgetOptions}
                               onChange={(e) =>
-                                  updateWidget(widget.id,
+                                  updateWidget(topicId, widget.id,
                                       {
                                           "type": e[0].value,
                                           "index": widget.index,
@@ -56,7 +56,7 @@ const ListWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveDo
                     value={widget.list_data}
                     placeholder={widget.list_data === "" ? "List items separated by comma": widget.list_data}
                     onChange={(e) =>
-                        updateWidget(widget.id,
+                        updateWidget(topicId, widget.id,
                             {
                                 "type": widget.type,
                                 "index": widget.index,
@@ -76,7 +76,7 @@ const ListWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveDo
                     options={orderOptions}
                     placeholder={widget.ordered ? "Ordered": "Unordered"}
                     onChange={(e) =>
-                        updateWidget(widget.id,
+                        updateWidget(topicId, widget.id,
                             {
                                 "type": widget.type,
                                 "index": widget.index,

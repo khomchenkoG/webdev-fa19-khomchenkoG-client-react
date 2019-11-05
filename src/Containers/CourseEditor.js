@@ -7,8 +7,8 @@ import ModuleListContainer from '../Containers/ModuleListContainer';
 import WidgetListContainer from '../Containers/WidgetListContainer';
 import '../CSS/courseEditor.css'
 import Provider from "react-redux/lib/components/Provider";
-import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import {createStore, applyMiddleware} from 'redux';
+import {composeWithDevTools} from 'redux-devtools-extension';
 import widgetListReducer from "../reducers/WidgetListReducer";
 import WidgetService from "../services/WidgetService";
 import WidgetListComponent from "../components/WidgetListComponent";
@@ -22,7 +22,7 @@ const EditorContext = React.createContext(null)
 
 
 export default class CourseEditor
-extends React.Component {
+    extends React.Component {
 
 
     constructor(props) {
@@ -34,14 +34,27 @@ extends React.Component {
         this.findFirstModule = this.findFirstModule.bind(this)
 
         this.state = {
-            course: courseService.findCourseById(props.match.params.courseId),
-            moduleId: courseService.findInitialItems(props.match.params.courseId).firstModule,
-            lessonId: courseService.findInitialItems(props.match.params.courseId).firstLesson,
-            topicId: courseService.findInitialItems(props.match.params.courseId).firstTopic,
+            courseId: props.match.params.courseId,
+            course: null,
+            moduleId: null,
+            lessonId: null,
+            topicId: null,
             widgets: null
         }
     }
 
+    async componentDidMount() {
+        let course = await courseService.findCourseById(this.state.courseId)
+        let initItems = await courseService.findInitialItems(course)
+        this.setState({
+                course: course,
+                moduleId: initItems.firstModule,
+                lessonId: initItems.firstLesson,
+                topicId: initItems.firstTopic,
+                widgets: null
+            }
+        )
+    }
 
 
     findFirstModule(course) {
@@ -66,32 +79,31 @@ extends React.Component {
         let firstLesson = null;
 
         if (curModule) {
-            lessons = courseService.findLessons(course.id, curModule)
+            lessons = courseService.findLessons(course, curModule)
             if (lessons.length != 0) {
                 firstLesson = lessons[0].id
-             }
+            }
         }
         return firstLesson;
 
     }
 
-    findFirstTopic(curModule, curLesson){
+    findFirstTopic(curModule, curLesson) {
         let module = this.state.course.modules.find(module => module.id === curModule);
-        let lesson = module.lessons.find(lesson=>lesson.id === curLesson);
+        let lesson = module.lessons.find(lesson => lesson.id === curLesson);
         let topicId = null;
-        if (lesson.topics && lesson.topics.length > 0){
+        if (lesson.topics && lesson.topics.length > 0) {
             topicId = lesson.topics[0].id
         }
         return topicId;
     }
 
 
-
     findLessons(moduleId) {
         let lessonsToRender
         if (this.state.moduleId) {
             lessonsToRender = courseService
-                .findLessons(this.state.course.id, this.state.moduleId)
+                .findLessons(this.state.course, moduleId)
         } else if (this.state.course.modules[0]) {
             lessonsToRender = this.state.course.modules[0].lessons
 
@@ -167,83 +179,91 @@ extends React.Component {
         } else {
             topicsToRender = []
         }
-        return { lessons: lessonsToRender, topics: topicsToRender }
+        return {lessons: lessonsToRender, topics: topicsToRender}
 
 
     }
 
 
-
     render() {
-        let args = this.setUpView();
-        //let store = createStore(widgetListReducer);
-        let store = createStore(widgetListReducer,
-            {widgets: [],
-                preview: false,
-            topicId: this.state.topicId},
-            window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
-        widgetService
-            .findAllWidgets(this.state.topicId)
-            .then(widgets => store.dispatch({
-                type: "FIND_ALL_WIDGETS",
-                widgets: widgets
-            }))
+        if (this.state.course) {
+            let args = this.setUpView();
+            //let store = createStore(widgetListReducer);
+            let store = createStore(widgetListReducer,
+                {
+                    widgets: [],
+                    preview: false,
+                    topicId: this.state.topicId
+                },
+                window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+            widgetService
+                .findAllWidgets(this.state.topicId)
+                .then(widgets => store.dispatch({
+                    type: "FIND_ALL_WIDGETS",
+                    widgets: widgets
+                }))
 
-        // if (this.state.widgets != null){
-        //     let topicsWidgets = widgetService.findWidgets();
-        //         ////args.topics.find(topic => topic.id === this.state.topicId).widgets;
-        //     let widgets = this.state.widgets;
-        //     // if (topicsWidgets.length > 0){
-        //     //     widgets = topicsWidgets;
-        //     // }
-        //     store = createStore(widgetListReducer,
-        //         {widgets: [],
-        //         preview: false},
-        //         window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
-        // }
+            // if (this.state.widgets != null){
+            //     let topicsWidgets = widgetService.findWidgets();
+            //         ////args.topics.find(topic => topic.id === this.state.topicId).widgets;
+            //     let widgets = this.state.widgets;
+            //     // if (topicsWidgets.length > 0){
+            //     //     widgets = topicsWidgets;
+            //     // }
+            //     store = createStore(widgetListReducer,
+            //         {widgets: [],
+            //         preview: false},
+            //         window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+            // }
 
-        return (
-            <div class="container-fluid">
-        <nav className="navbar navbar-collapse navbar-expand-lg editor-nav">
-        <div className="nav nav-tabs editor-nav-tabs nav-justified take-full-width">
-          <button className="btn"><i className="fas fa-times" /></button>
-          <b className="navbar-brand wbdv-course-title">Course Editor {this.state.course.id}</b>
-          <a className="nav-link editor-tab toHide" href="#">Build</a>
-          <a className="nav-link editor-tab">Pages</a>
-          <a className="nav-link editor-tab wbdv-page-tab toHide" href="#">Theme</a>
-          <a className="nav-link editor-tab wbdv-page-tab toHide" href="#">Store</a>
-          <a className="nav-link editor-tab wbdv-page-tab toHide" href="#">Apps</a>
-          <a className="nav-link editor-tab wbdv-page-tab toHide" href="#">Settings</a>
-          <button className="btn wbdv-new-page-btn alignRight" style={{float: 'right'}}><i className="fas fa-plus-circle fa-2x" /></button>
-        </div>
-      </nav>
-        <div className="row">
-            <div className="col-4">
-                <ModuleListContainer 
-                course={this.state.course}
-                moduleChanged={this.moduleChanged}
-                moduleDeleted={this.moduleDeleted}
-                activeModule={this.state.moduleId}/>
-            </div>
-            <div className="col-8 take-full-width">
-            <LessonTabs 
-            lessons={args.lessons}
-            callBack={this.lessonChanged}
-            activeLesson={this.state.lessonId}
-            />
-            <TopicTabs 
-            topics={args.topics}
-            callBack={this.topicChanged}
-            activeTopic={this.state.topicId}
-            />
-            <Provider store={store} context= {EditorContext}>
-                <WidgetListContainer context= {EditorContext}/>
-            </Provider>
+            return (
+                <div class="container-fluid">
+                    <nav className="navbar navbar-collapse navbar-expand-lg editor-nav">
+                        <div className="nav nav-tabs editor-nav-tabs nav-justified take-full-width">
+                            <button className="btn"><i className="fas fa-times"/></button>
+                            <b className="navbar-brand wbdv-course-title">Course Editor {this.state.course.id}</b>
+                            <a className="nav-link editor-tab toHide" href="#">Build</a>
+                            <a className="nav-link editor-tab">Pages</a>
+                            <a className="nav-link editor-tab wbdv-page-tab toHide" href="#">Theme</a>
+                            <a className="nav-link editor-tab wbdv-page-tab toHide" href="#">Store</a>
+                            <a className="nav-link editor-tab wbdv-page-tab toHide" href="#">Apps</a>
+                            <a className="nav-link editor-tab wbdv-page-tab toHide" href="#">Settings</a>
+                            <button className="btn wbdv-new-page-btn alignRight" style={{float: 'right'}}><i
+                                className="fas fa-plus-circle fa-2x"/></button>
+                        </div>
+                    </nav>
+                    <div className="row">
+                        <div className="col-4">
+                            <ModuleListContainer
+                                course={this.state.course}
+                                moduleChanged={this.moduleChanged}
+                                moduleDeleted={this.moduleDeleted}
+                                activeModule={this.state.moduleId}/>
+                        </div>
+                        <div className="col-8 take-full-width">
+                            <LessonTabs
+                                lessons={args.lessons}
+                                callBack={this.lessonChanged}
+                                activeLesson={this.state.lessonId}
+                            />
+                            <TopicTabs
+                                topics={args.topics}
+                                callBack={this.topicChanged}
+                                activeTopic={this.state.topicId}
+                            />
+                            <Provider store={store} context={EditorContext}>
+                                <WidgetListContainer context={EditorContext}/>
+                            </Provider>
 
-            </div>
+                        </div>
 
 
-        </div>
-    </div>)
+                    </div>
+                </div>)
+
+        } else {
+            return (null)
+        }
+
     }
 }

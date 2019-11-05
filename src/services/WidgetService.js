@@ -21,14 +21,14 @@ export default class WidgetService {
     }
 
     async findWidget(topicId, widgetId){
-        return fetch("http://localhost:8080/api/topics/" + topicId + "/widgets/" + widgetId)
+        return fetch("https://wbdv-f19-khomchenko-server.herokuapp.com/api/topics/" + topicId + "/widgets/" + widgetId)
             .then(response => response.json())
     }
 
 
 
     async findAllWidgets(topicId){
-        return fetch("http://localhost:8080/api/topics/" + topicId + "/widgets")
+        return fetch("https://wbdv-f19-khomchenko-server.herokuapp.com/api/topics/" + topicId + "/widgets")
             .then(response => response.json())
 
     }
@@ -47,7 +47,7 @@ export default class WidgetService {
                     ordered: true,
                     id: (new Date().getTime())
                 };
-        return fetch("http://localhost:8080/api/topics/" + topicId + "/widgets", {
+        return fetch("https://wbdv-f19-khomchenko-server.herokuapp.com/api/topics/" + topicId + "/widgets", {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -58,7 +58,7 @@ export default class WidgetService {
     }
 
     updateWidget(topicId, widgetId, widget) {
-        return fetch("http://localhost:8080/api/topics/" + topicId + "/widgets/"+ widgetId, {
+        return fetch("https://wbdv-f19-khomchenko-server.herokuapp.com/api/topics/" + topicId + "/widgets/"+ widgetId, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json'
@@ -68,20 +68,10 @@ export default class WidgetService {
             .then(response => response.json())
 
 
-
-    // if (this.topic.widgets) {
-        //     let widgets = this.topic.widgets
-        //     for (let i = 0; i < widgets.length; i++) {
-        //         if (widgets[i].id == widgetId) {
-        //             widgets[i] = widget
-        //         }
-        // }
-        // }
-
     }
 
     deleteWidget(topicId, widgetId) {
-        return fetch("http://localhost:8080/api/topics/" + topicId + "/widgets/"+ widgetId, {
+        return fetch("https://wbdv-f19-khomchenko-server.herokuapp.com/api/topics/" + topicId + "/widgets/"+ widgetId, {
             method: 'DELETE'})
             .then(response => response.json())
     }

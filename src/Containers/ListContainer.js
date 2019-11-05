@@ -7,6 +7,7 @@ import { FaSortAlphaDown } from 'react-icons/fa';
 import { FaPlusCircle } from 'react-icons/fa';
 
 const ListContainer = ({courses ,switchCallBack, deleteCallBack}) => {
+    console.log("Received courses: " + courses)
 
 
 return (<table class="table table-hover">

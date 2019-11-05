@@ -23,7 +23,7 @@ export default class CourseList extends React.Component {
                     modules: []
                 },
                 currentView: ListContainer,
-                courses: courseService.findAllCourses()
+                courses: []
             };
         }
 
@@ -38,34 +38,47 @@ export default class CourseList extends React.Component {
         }
 
         createCourse = () => {
-            courseService.createCourse(this.state.newCourse);
-            this.setState(prevState => ({
-                newCourse: {
-                    id: "",
-                    title: "",
-                    modules: []
-                },
-                currentView: prevState.currentView,
-                courses: courseService.findAllCourses()
-            }))
+            courseService.createCourse(this.state.newCourse).then(allCourses =>
+                this.setState(prevState => ({
+                    newCourse: {
+                        id: "",
+                        title: "",
+                        modules: []
+                    },
+                    currentView: prevState.currentView,
+                    courses: allCourses
+
+            })))
         }
 
         deleteCourse = (id) => {
-            courseService.deleteCourse(id);
-            this.setState(prevState => ({
+            courseService.deleteCourse(id).then(allCourses =>
+                this.setState(prevState => ({
                 newCourse: prevState.newCourse,
                 currentView: prevState.currentView,
-                courses: courseService.findAllCourses()
-            }))
+                courses: allCourses
+            })) )
+
         }
 
             switchView = (view) => {
-                this.setState({
-                    currentView: view
-                })
+                this.setState(prevState => ({
+                    newCourse: prevState.newCourse,
+                    currentView: prevState.currentView,
+                    courses: prevState.courses
+                }))
             }
 
-            render() {
+            componentDidMount() {
+            courseService.findAllCourses().then(courses =>
+                this.setState(prevState => ({
+                    newCourse: prevState.newCourse,
+                    currentView: prevState.currentView,
+                    courses: courses
+                })))
+            }
+
+    render() {
                 return (
                     <div class ="container-fluid">
         <nav class="navbar">

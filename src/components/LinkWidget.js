@@ -54,7 +54,7 @@ const LinkWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveDo
             <div className="widget-component-element">
                 <input
                     value={widget.link_title}
-                    placeholder={widget.title === "" ? "Link text" : widget.link_title}
+                    placeholder={widget.link_title === "" ? "Link text" : widget.link_title}
                     onChange={(e) =>
                         updateWidget(topicId, widget.id,
                             {
