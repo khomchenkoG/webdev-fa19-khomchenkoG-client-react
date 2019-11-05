@@ -17,35 +17,37 @@ export default class CourseService {
     }
 
     findAllCourses() {
-        return this.courses
+        return fetch("https://wbdv-f19-khomchenko-server.herokuapp.com/api/courses")
+            .then(response => response.json())
     }
 
-    findInitialItems(courseId){
+    findInitialItems(course){
         let initItems = {
             "firstModule": null,
             "firstLesson": null,
             "firstTopic": null,
         }
-        let course = this.findCourseById(courseId)
-        if (course.modules[0]){
-            let firstMod = course.modules[0]
-            initItems.firstModule = firstMod.id;
-            if (firstMod.lessons){
-                if (firstMod.lessons[0]){
-                    let firstLes = firstMod.lessons[0];
-                    initItems.firstLesson = firstLes.id;
-                    if (firstLes.topics){
-                        if (firstLes.topics[0]){
-                            let firstTop = firstLes.topics[0]
-                            initItems.firstTopic = firstTop.id;
-                        }
+            if (course.modules[0]){
+                let firstMod = course.modules[0]
+                initItems.firstModule = firstMod.id;
+                if (firstMod.lessons){
+                    if (firstMod.lessons[0]){
+                        let firstLes = firstMod.lessons[0];
+                        initItems.firstLesson = firstLes.id;
+                        if (firstLes.topics){
+                            if (firstLes.topics[0]){
+                                let firstTop = firstLes.topics[0]
+                                initItems.firstTopic = firstTop.id;
+                            }
 
+                        }
                     }
                 }
             }
+            return initItems;
         }
-        return initItems;
-    }
+
+
 
     findWidgets(courseId, moduleId, lessonId, topicId){
         if(courseId && moduleId && lessonId && topicId){
@@ -55,8 +57,7 @@ export default class CourseService {
 
     }
 
-    findLessons(courseId, moduleId) {
-        let course = this.courses.find(course => course.id === courseId)
+    findLessons(course, moduleId) {
         let modules = course.modules
         let module = modules.find(module => module.id === moduleId)
         let lessons;
@@ -82,11 +83,19 @@ export default class CourseService {
     }
 
     createCourse(course) {
-        this.courses.push(course)
+        return fetch("https://wbdv-f19-khomchenko-server.herokuapp.com/api/courses", {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(course)
+        }).then(response => response.json())
+
     }
 
     findCourseById(courseId) {
-        return this.courses.find(course => course.id === courseId)
+        return fetch(`https://wbdv-f19-khomchenko-server.herokuapp.com/api/courses/${courseId}`)
+            .then(response => response.json())
     }
 
     deleteModule(moduleId, courseId){
@@ -96,7 +105,9 @@ export default class CourseService {
     }
 
     deleteCourse(courseId) {
-        this.courses = this.courses.filter(course => course.id !== courseId)
+        return fetch(`https://wbdv-f19-khomchenko-server.herokuapp.com/api/courses/${courseId}`, {
+            method: 'DELETE'})
+            .then(response => response.json())
     }
 
     updateCourse(courseId, courseToUpdate) {

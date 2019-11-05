@@ -12,21 +12,21 @@ const widgetOptions = [
     { label: "Link", value: "LINK" },
 ]
 
-const ImageWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveDown, isFirst, isLast}) => {
+const ImageWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveDown, isFirst, isLast, topicId}) => {
     if (!preview) {
         return(<div className="container widget-container">
             <div className="navbar">
                 <div className="nav-header"><h2> Image widget </h2></div>
                 <div className="form-inline float-right">
                     <button style={isFirst ? {display: 'none'}: {}}
-                        onClick={() => moveUp(widget.id)}
+                        onClick={() => moveUp(topicId, widget.id)}
                     ><TiArrowUpThick class="delete-btn" size={28}/></button>
                     <button style={isLast ? {display: 'none'}: {}}
-                        onClick={() => moveDown(widget.id)}
+                        onClick={() => moveDown(topicId, widget.id)}
                     ><TiArrowDownThick class="delete-btn" size={28}/></button>
                     <Dropdown className="widget-dropdown" options={widgetOptions}
                               onChange={(e) =>
-                                  updateWidget(widget.id,
+                                  updateWidget(topicId, widget.id,
                                       {
                                           "type": e[0].value,
                                           "index": widget.index,
@@ -41,7 +41,7 @@ const ImageWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveD
                                       }
                                   )} size={17} placeholder={widget.type}/>
                     <button className="btn"
-                            onClick={() => deleteWidget(widget.id)}
+                            onClick={() => deleteWidget(topicId, widget.id)}
                     ><FaTimes class="delete-btn" size={28}/></button>
 
                 </div>
@@ -52,7 +52,7 @@ const ImageWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveD
                     value={widget.image_url}
                     placeholder={widget.image_url === "" ? "Image URL" : widget.image_url}
                     onChange={(e) =>
-                        updateWidget(widget.id,
+                        updateWidget(topicId, widget.id,
                             {
                                 "type": widget.type,
                                 "index": widget.index,

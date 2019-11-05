@@ -8,7 +8,8 @@ const service = WidgetService.getInstance();
 const stateToPropertyMapper = state => {
     return {
         widgets: state.widgets,
-        preview: state.preview
+        preview: state.preview,
+        topicId: state.topicId
     }
 }
 
@@ -19,51 +20,69 @@ const stateToPropertyMapper = state => {
 
 const dispatcherToPropertyMapper = dispatch => {
     return {
-        loadWidgets: () => {
+        loadWidgets: (topicId) => {
             service
-                .findAllWidgets()
+                .findAllWidgets(topicId)
                 .then(widgets => dispatch({
                     type: "FIND_ALL_WIDGETS",
                     widgets: widgets
                 }))
         },
-        addWidget: () => {
-            service.createWidget()
+        addWidget: (topicId) => {
+            console.log(topicId)
+            service.createWidget(topicId)
                 .then(widgets => dispatch({
                     type: "CREATE_WIDGET",
                     widgets: widgets
                 }))
         },
-        deleteWidget: (id) => {
-            service.deleteWidget(id)
+        deleteWidget: (topicId, widgetId) => {
+            service.deleteWidget(topicId, widgetId)
                 .then(widgets => dispatch({
                     type: "DELETE_WIDGET",
                     widgets: widgets
                 }))
         },
-        updateWidget: (id, widget) => {
-            service.updateWidget(id, widget)
+        updateWidget: (topicId, widgetId, widget) => {
+            service.updateWidget(topicId, widgetId, widget)
             .then(widgets => dispatch({
                 type: "UPDATE_WIDGET",
                 widgets: widgets
             }))
         },
-        findAllWidgetsForTopic: (id) => {
-            dispatch({
-                type: 'FIND_ALL_WIDGETS_FOR_TOPIC', topicId: id
-            })
+        moveUp: (topicId, widgetId) => {
+            service.findWidget(topicId, widgetId)
+                .then(widget => {
+                    const newWidget = widget;
+                    newWidget.index = newWidget.index - 1
+                    return newWidget
+                })
+                .then(newWidget => service.updateWidget(topicId, widgetId, newWidget)
+                    .then(widgets => dispatch({
+                        type: "UPDATE_WIDGET",
+                        widgets: widgets.sort(function(w1, w2) {
+                            return w1.index - w2.index;
+                        })
+                    })))
         },
-        moveUp: (id) => {
-            dispatch({type: 'MOVE_WIDGET_UP', widgetId: id})
+        moveDown: (topicId, widgetId) => {
+
+            service.findWidget(topicId, widgetId)
+                .then(widget => {
+                    const newWidget = widget;
+                    newWidget.index = newWidget.index + 1
+                    return newWidget
+                })
+                .then(newWidget => service.updateWidget(topicId, widgetId, newWidget)
+                .then(widgets => dispatch({
+                    type: "UPDATE_WIDGET",
+                    widgets: widgets.sort(function(w1, w2) {
+                        return w1.index - w2.index;
+                    })
+                })))
+
+
         },
-        moveDown: (id) => {
-            dispatch({type: 'MOVE_WIDGET_DOWN', widgetId: id})
-        },
-        findAllWidgets: () => {
-            dispatch({
-                type: 'FIND_ALL_WIDGETS'
-            })
-            },
         switchPreview:()  => {
             dispatch({
                 type: 'SWITCH_PREVIEW'

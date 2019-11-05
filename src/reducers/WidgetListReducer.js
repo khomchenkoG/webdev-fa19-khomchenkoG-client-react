@@ -3,16 +3,14 @@ import CourseService from "../services/CourseService";
 import WidgetService from "../services/WidgetService";
 import 'array.prototype.move';
 
-const initialState = {
-    widgets: []
-}
 
 const widgetService = WidgetService.getInstance();
 
 
 
 
-const widgetListReducer = (state = initialState, action) => {
+const widgetListReducer = (state, action) => {
+    console.log(state)
     let newState = Object.assign({}, state);
 
     function swapWidgets (widgets, idx1, idx2){
@@ -32,12 +30,14 @@ const widgetListReducer = (state = initialState, action) => {
         case "FIND_ALL_WIDGETS":
             return {
                 widgets: action.widgets,
-                preview: state.preview
+                preview: state.preview,
+                topicId: state.topicId
             }
         case 'DELETE_WIDGET':
             return {
                 widgets: action.widgets,
-                preview: state.preview
+                preview: state.preview,
+                topicId: state.topicId
             }
         case 'CREATE_WIDGET':
             return {
@@ -58,14 +58,16 @@ const widgetListReducer = (state = initialState, action) => {
                 //     }
                 // ],
                 widgets: action.widgets,
-                preview: state.preview
+                preview: state.preview,
+                topicId: state.topicId
             }
 
         case 'UPDATE_WIDGET':
 
             return {
                 widgets: action.widgets,
-                preview: state.preview
+                preview: state.preview,
+                topicId: state.topicId
             }
         //         widgets: state.widgets.map(widget=> {
         //             if (widget.id === action.widgetId) {
@@ -81,24 +83,28 @@ const widgetListReducer = (state = initialState, action) => {
             let idxUp = state.widgets.indexOf(state.widgets.find(widget => widget.id === action.widgetId))
             return {
                 widgets: swapWidgets(state.widgets, idxUp, idxUp - 1),
-                preview: false
+                preview: false,
+                topicId: state.topicId
             };
         case 'MOVE_WIDGET_DOWN':
             let idxDown = state.widgets.indexOf(state.widgets.find(widget => widget.id === action.widgetId))
 
             return {
                 widgets: swapWidgets(state.widgets, idxDown, idxDown + 1),
-                preview: false
+                preview: false,
+                topicId: state.topicId
             };
         case 'FIND_ALL_WIDGETS_FOR_TOPIC':
             return {
                 widgets: widgetService.findWidgets(action.topicId),
-                preview: state.preview
+                preview: state.preview,
+                topicId: state.topicId
             };
         case 'SWITCH_PREVIEW':
             return {
                 widgets: state.widgets,
-                preview: !state.preview
+                preview: !state.preview,
+                topicId: state.topicId
             };
         default:
             return state
