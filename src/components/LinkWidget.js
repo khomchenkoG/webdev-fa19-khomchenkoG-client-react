@@ -33,7 +33,7 @@ const LinkWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveDo
                                   updateWidget(topicId, widget.id,
                                       {
                                           "type": e[0].value,
-                                          "index": widget.index,
+                                          "idx": widget.idx,
                                           "link_title": widget.link_title,
                                           "heading_size": widget.heading_size,
                                           "heading_data": widget.heading_data,
@@ -59,7 +59,7 @@ const LinkWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveDo
                         updateWidget(topicId, widget.id,
                             {
                                 "type": widget.type,
-                                "index": widget.index,
+                                "idx": widget.idx,
                                 "link_title": e.target.value,
                                 "heading_size": widget.heading_size,
                                 "heading_data": widget.heading_data,
@@ -81,7 +81,7 @@ const LinkWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveDo
                         updateWidget(topicId, widget.id,
                             {
                                 "type": widget.type,
-                                "index": widget.index,
+                                "idx": widget.idx,
                                 "link_title": widget.link_title,
                                 "heading_size": widget.heading_size,
                                 "heading_data": widget.heading_data,

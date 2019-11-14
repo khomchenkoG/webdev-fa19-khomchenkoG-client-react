@@ -29,7 +29,6 @@ const dispatcherToPropertyMapper = dispatch => {
                 }))
         },
         addWidget: (topicId) => {
-            console.log(topicId)
             service.createWidget(topicId)
                 .then(widgets => dispatch({
                     type: "CREATE_WIDGET",
@@ -44,42 +43,46 @@ const dispatcherToPropertyMapper = dispatch => {
                 }))
         },
         updateWidget: (topicId, widgetId, widget) => {
-            service.updateWidget(topicId, widgetId, widget)
-            .then(widgets => dispatch({
-                type: "UPDATE_WIDGET",
-                widgets: widgets
-            }))
+            dispatch({type: 'UPDATE_WIDGET', widget: widget})
+
+            // service.updateWidget(topicId, widgetId, widget)
+            // .then(widgets => dispatch({
+            //     type: "UPDATE_WIDGET",
+            //     widgets: widgets
+            // }))
         },
         moveUp: (topicId, widgetId) => {
-            service.findWidget(topicId, widgetId)
-                .then(widget => {
-                    const newWidget = widget;
-                    newWidget.index = newWidget.index - 1
-                    return newWidget
-                })
-                .then(newWidget => service.updateWidget(topicId, widgetId, newWidget)
-                    .then(widgets => dispatch({
-                        type: "UPDATE_WIDGET",
-                        widgets: widgets.sort(function(w1, w2) {
-                            return w1.index - w2.index;
-                        })
-                    })))
+            dispatch({type: 'MOVE_WIDGET_UP', widgetId: widgetId})
+            // service.findWidget(topicId, widgetId)
+            //     .then(widget => {
+            //         const newWidget = widget;
+            //         newWidget.index = newWidget.index - 1
+            //         return newWidget
+            //     })
+            //     .then(newWidget => service.updateWidget(topicId, widgetId, newWidget)
+            //         .then(widgets => dispatch({
+            //             type: "UPDATE_WIDGET",
+            //             widgets: widgets.sort(function(w1, w2) {
+            //                 return w1.index - w2.index;
+            //             })
+            //         })))
         },
         moveDown: (topicId, widgetId) => {
+            dispatch({type: 'MOVE_WIDGET_DOWN', widgetId: widgetId})
 
-            service.findWidget(topicId, widgetId)
-                .then(widget => {
-                    const newWidget = widget;
-                    newWidget.index = newWidget.index + 1
-                    return newWidget
-                })
-                .then(newWidget => service.updateWidget(topicId, widgetId, newWidget)
-                .then(widgets => dispatch({
-                    type: "UPDATE_WIDGET",
-                    widgets: widgets.sort(function(w1, w2) {
-                        return w1.index - w2.index;
-                    })
-                })))
+            // service.findWidget(topicId, widgetId)
+            //     .then(widget => {
+            //         const newWidget = widget;
+            //         newWidget.index = newWidget.index + 1
+            //         return newWidget
+            //     })
+            //     .then(newWidget => service.updateWidget(topicId, widgetId, newWidget)
+            //     .then(widgets => dispatch({
+            //         type: "UPDATE_WIDGET",
+            //         widgets: widgets.sort(function(w1, w2) {
+            //             return w1.index - w2.index;
+            //         })
+            //     })))
 
 
         },
@@ -87,6 +90,14 @@ const dispatcherToPropertyMapper = dispatch => {
             dispatch({
                 type: 'SWITCH_PREVIEW'
             })
+        },
+
+        saveAllWidgets: (topicId, widgets) => {
+            service.saveAllWidgets(topicId, widgets)
+                .then(widgets => dispatch({
+                    type: "SAVE_ALL_WIDGETS",
+                    widgets: widgets
+                }))
         }
     }
 }

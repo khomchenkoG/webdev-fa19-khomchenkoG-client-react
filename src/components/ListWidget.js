@@ -23,17 +23,17 @@ const ListWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveDo
                 <div className="nav-header"><h2> List widget </h2></div>
                 <div className="form-inline float-right">
                     <button style={isFirst ? {display: 'none'}: {}}
-                        onClick={() => moveUp(widget.id)}
+                        onClick={() => moveUp(topicId, widget.id)}
                     ><TiArrowUpThick class="delete-btn" size={28}/></button>
                     <button style={isLast ? {display: 'none'}: {}}
-                        onClick={() => moveDown(widget.id)}
+                        onClick={() => moveDown(topicId, widget.id)}
                     ><TiArrowDownThick class="delete-btn" size={28}/></button>
                     <Dropdown className="widget-dropdown" options={widgetOptions}
                               onChange={(e) =>
                                   updateWidget(topicId, widget.id,
                                       {
                                           "type": e[0].value,
-                                          "index": widget.index,
+                                          "idx": widget.idx,
                                           "link_title": widget.link_title,
                                           "heading_size": widget.heading_size,
                                           "heading_data": widget.heading_data,
@@ -41,11 +41,12 @@ const ListWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveDo
                                           "paragraph_data": widget.paragraph_data,
                                           "image_url": widget.image_url,
                                           "link_data": widget.link_data,
+                                          "ordered": widget.ordered,
                                           "id": widget.id
                                       }
                                   )} size={17} placeholder={widget.type}/>
                     <button className="btn"
-                            onClick={() => deleteWidget(widget.id)}
+                            onClick={() => deleteWidget(topicId, widget.id)}
                     ><FaTimes class="delete-btn" size={28}/></button>
 
                 </div>
@@ -59,7 +60,7 @@ const ListWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveDo
                         updateWidget(topicId, widget.id,
                             {
                                 "type": widget.type,
-                                "index": widget.index,
+                                "idx": widget.idx,
                                 "link_title": widget.link_title,
                                 "heading_size": widget.heading_size,
                                 "heading_data": widget.heading_data,
@@ -67,6 +68,7 @@ const ListWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveDo
                                 "paragraph_data": widget.paragraph_data,
                                 "image_url": widget.image_url,
                                 "link_data": widget.link_data,
+                                "ordered": widget.ordered,
                                 "id": widget.id
                             })}
                     className="form-control"/>
@@ -79,7 +81,7 @@ const ListWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveDo
                         updateWidget(topicId, widget.id,
                             {
                                 "type": widget.type,
-                                "index": widget.index,
+                                "idx": widget.idx,
                                 "link_title": widget.link_title,
                                 "heading_size": widget.heading_size,
                                 "heading_data": widget.heading_data,

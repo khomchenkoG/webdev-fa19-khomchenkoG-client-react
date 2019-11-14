@@ -3,6 +3,7 @@ import ModuleList from "../components/ModuleList";
 import LessonTabs from "../components/LessonTabs";
 import TopicTabs from "../components/TopicTabs";
 import CourseService from '../services/CourseService';
+import ModuleService from '../services/ModuleService';
 import ModuleListContainer from '../Containers/ModuleListContainer';
 import WidgetListContainer from '../Containers/WidgetListContainer';
 import '../CSS/courseEditor.css'
@@ -13,8 +14,11 @@ import widgetListReducer from "../reducers/WidgetListReducer";
 import WidgetService from "../services/WidgetService";
 import WidgetListComponent from "../components/WidgetListComponent";
 import dispatcherToPropertyMapper from '../Containers/WidgetListContainer'
+import LessonService from "../services/LessonService";
 
 let courseService = CourseService.getInstance();
+let moduleService = ModuleService.getInstance();
+let lessonService = LessonService.getInstance();
 let widgetService = WidgetService.getInstance();
 
 
@@ -32,6 +36,7 @@ export default class CourseEditor
         this.topicChanged = this.topicChanged.bind(this)
         this.moduleDeleted = this.moduleDeleted.bind(this)
         this.findFirstModule = this.findFirstModule.bind(this)
+        this.updateCourse = this.updateCourse.bind(this)
 
         this.state = {
             courseId: props.match.params.courseId,
@@ -44,16 +49,24 @@ export default class CourseEditor
     }
 
     async componentDidMount() {
+        console.log("I was called")
         let course = await courseService.findCourseById(this.state.courseId)
         let initItems = await courseService.findInitialItems(course)
-        this.setState({
+        this.setState(prevState =>({
                 course: course,
-                moduleId: initItems.firstModule,
+                moduleId: prevState.moduleId ? prevState.moduleId : initItems.firstModule,
                 lessonId: initItems.firstLesson,
                 topicId: initItems.firstTopic,
                 widgets: null
-            }
+            })
         )
+    }
+
+    updateCourse () {
+        courseService.findCourseById(this.state.courseId).then(updatedCourse =>
+            this.setState({
+                course: updatedCourse
+            }))
     }
 
 
@@ -88,14 +101,20 @@ export default class CourseEditor
 
     }
 
-    findFirstTopic(curModule, curLesson) {
-        let module = this.state.course.modules.find(module => module.id === curModule);
-        let lesson = module.lessons.find(lesson => lesson.id === curLesson);
-        let topicId = null;
-        if (lesson.topics && lesson.topics.length > 0) {
-            topicId = lesson.topics[0].id
+    async findFirstTopic(curModule, curLesson) {
+        let modules = await moduleService.findAllModules(this.state.courseId)
+        let module = modules.find(module => module.id === curModule);
+        if (module.lessons.length > 0){
+            let lesson = module.lessons.find(les => les.id === curLesson);
+            let topicId = null;
+            if (lesson.topics && lesson.topics.length > 0) {
+                topicId = lesson.topics[0].id
+            }
+            return topicId;
+        } else {
+            return null;
         }
-        return topicId;
+
     }
 
 
@@ -150,13 +169,14 @@ export default class CourseEditor
 
     }
 
-    lessonChanged = (curLeesonId) => {
+    lessonChanged = (curLessonId) => {
+        this.findFirstTopic(this.state.moduleId, curLessonId).then(topicId =>
         this.setState(prevState => ({
             course: prevState.course,
             moduleId: prevState.moduleId,
-            lessonId: curLeesonId,
-            topicId: this.findFirstTopic(prevState.moduleId, curLeesonId)
-        }))
+            lessonId: curLessonId,
+            topicId: topicId
+        })))
     }
 
     topicChanged = (curTopicId) => {
@@ -188,6 +208,8 @@ export default class CourseEditor
     render() {
         if (this.state.course) {
             let args = this.setUpView();
+            console.log("Topics size: " + args.topics.length)
+            console.log("TopcId: " + this.state.topicId)
             //let store = createStore(widgetListReducer);
             let store = createStore(widgetListReducer,
                 {
@@ -242,11 +264,14 @@ export default class CourseEditor
                         </div>
                         <div className="col-8 take-full-width">
                             <LessonTabs
+                                moduleId={this.state.moduleId}
                                 lessons={args.lessons}
                                 callBack={this.lessonChanged}
                                 activeLesson={this.state.lessonId}
+                                updateCourse={this.updateCourse}
                             />
                             <TopicTabs
+                                lessonId={this.state.lessonId}
                                 topics={args.topics}
                                 callBack={this.topicChanged}
                                 activeTopic={this.state.topicId}

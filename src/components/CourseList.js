@@ -18,9 +18,7 @@ export default class CourseList extends React.Component {
 
             this.state = {
                 newCourse: {
-                    id: "",
-                    title: "",
-                    modules: []
+                    title: ""
                 },
                 currentView: ListContainer,
                 courses: []
@@ -30,9 +28,7 @@ export default class CourseList extends React.Component {
         titleChanged = (event) => {
             this.setState({
                 newCourse: {
-                    id: (new Date()).getTime(),
                     title: event.currentTarget.value,
-                    modules: []
                 }
             })
         }
@@ -41,9 +37,7 @@ export default class CourseList extends React.Component {
             courseService.createCourse(this.state.newCourse).then(allCourses =>
                 this.setState(prevState => ({
                     newCourse: {
-                        id: "",
-                        title: "",
-                        modules: []
+                        title: ""
                     },
                     currentView: prevState.currentView,
                     courses: allCourses

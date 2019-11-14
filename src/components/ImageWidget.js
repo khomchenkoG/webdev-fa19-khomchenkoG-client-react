@@ -29,7 +29,7 @@ const ImageWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveD
                                   updateWidget(topicId, widget.id,
                                       {
                                           "type": e[0].value,
-                                          "index": widget.index,
+                                          "idx": widget.idx,
                                           "link_title": widget.link_title,
                                           "heading_size": widget.heading_size,
                                           "heading_data": widget.heading_data,
@@ -37,6 +37,7 @@ const ImageWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveD
                                           "paragraph_data": widget.paragraph_data,
                                           "image_url": widget.image_url,
                                           "link_data": widget.link_data,
+                                          "ordered": widget.ordered,
                                           "id": widget.id
                                       }
                                   )} size={17} placeholder={widget.type}/>
@@ -55,7 +56,7 @@ const ImageWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveD
                         updateWidget(topicId, widget.id,
                             {
                                 "type": widget.type,
-                                "index": widget.index,
+                                "idx": widget.idx,
                                 "link_title": widget.link_title,
                                 "heading_size": widget.heading_size,
                                 "heading_data": widget.heading_data,
@@ -63,6 +64,7 @@ const ImageWidget = ({widget, deleteWidget, updateWidget, preview, moveUp, moveD
                                 "paragraph_data": widget.paragraph_data,
                                 "image_url": e.target.value,
                                 "link_data": widget.link_data,
+                                "ordered": widget.ordered,
                                 "id": widget.id
 
                             })}

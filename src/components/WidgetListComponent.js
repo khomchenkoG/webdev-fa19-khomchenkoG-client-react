@@ -42,6 +42,7 @@ class WidgetListComponent extends React.Component {
                             <Switch onChange={this.props.switchPreview} checked={this.props.preview}/>
                         </div>
                         <button className="btn-primary"
+                                onClick={() => this.props.saveAllWidgets(this.props.topicId, this.props.widgets)}
                                 style={{'margin-left': 10, 'margin-bottom': 7, 'background-color': 'green'}}> Save
                         </button>
                     </div>

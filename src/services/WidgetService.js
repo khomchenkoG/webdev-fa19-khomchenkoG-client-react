@@ -7,6 +7,8 @@ let courseService = CourseService.getInstance()
 
 export default class WidgetService {
 
+    localHost = " http://localhost:8080"
+    herokuHost = "https://wbdv-f19-khomchenko-server.herokuapp.com"
 
     static myInstance = null;
 
@@ -21,22 +23,24 @@ export default class WidgetService {
     }
 
     async findWidget(topicId, widgetId){
-        return fetch("https://wbdv-f19-khomchenko-server.herokuapp.com/api/topics/" + topicId + "/widgets/" + widgetId)
+        return fetch(this.localHost + "/api/topics/" + topicId + "/widgets/" + widgetId)
             .then(response => response.json())
     }
 
 
 
     async findAllWidgets(topicId){
-        return fetch("https://wbdv-f19-khomchenko-server.herokuapp.com/api/topics/" + topicId + "/widgets")
+        return fetch(this.localHost + "/api/topics/" + topicId + "/widgets")
             .then(response => response.json())
 
     }
 
+    async
+
     async createWidget(topicId){
         let newWidget = {
                     type: "HEADING",
-                    index: 1,
+                    idx: 1,
                     link_title: "",
                     heading_size: 1,
                     heading_data: "",
@@ -45,9 +49,8 @@ export default class WidgetService {
                     image_url: "",
                     link_data: "",
                     ordered: true,
-                    id: (new Date().getTime())
                 };
-        return fetch("https://wbdv-f19-khomchenko-server.herokuapp.com/api/topics/" + topicId + "/widgets", {
+        return fetch(this.localHost + "/api/topics/" + topicId + "/widgets", {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -58,7 +61,7 @@ export default class WidgetService {
     }
 
     updateWidget(topicId, widgetId, widget) {
-        return fetch("https://wbdv-f19-khomchenko-server.herokuapp.com/api/topics/" + topicId + "/widgets/"+ widgetId, {
+        return fetch(this.localHost + "/api/topics/" + topicId + "/widgets/"+ widgetId, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json'
@@ -66,12 +69,21 @@ export default class WidgetService {
             body: JSON.stringify(widget)
         })
             .then(response => response.json())
+    }
 
-
+    saveAllWidgets(topicId, widgets) {
+        return fetch(this.localHost + "/api/topics/" + topicId + "/widgets", {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(widgets)
+        })
+            .then(response => response.json())
     }
 
     deleteWidget(topicId, widgetId) {
-        return fetch("https://wbdv-f19-khomchenko-server.herokuapp.com/api/topics/" + topicId + "/widgets/"+ widgetId, {
+        return fetch(this.localHost + "/api/topics/" + topicId + "/widgets/"+ widgetId, {
             method: 'DELETE'})
             .then(response => response.json())
     }

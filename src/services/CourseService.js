@@ -5,7 +5,10 @@ import coursesJson from './Courses.json';
 export default class CourseService {
 
     static myInstance = null;
-    courses = coursesJson;
+
+    localHost = " http://localhost:8080"
+    herokuHost = "https://wbdv-f19-khomchenko-server.herokuapp.com"
+
 
     static getInstance() {
 
@@ -17,7 +20,7 @@ export default class CourseService {
     }
 
     findAllCourses() {
-        return fetch("https://wbdv-f19-khomchenko-server.herokuapp.com/api/courses")
+        return fetch(this.localHost +"/api/courses")
             .then(response => response.json())
     }
 
@@ -49,14 +52,6 @@ export default class CourseService {
 
 
 
-    findWidgets(courseId, moduleId, lessonId, topicId){
-        if(courseId && moduleId && lessonId && topicId){
-            let course = this.findCourseById(courseId);
-            let module
-        }
-
-    }
-
     findLessons(course, moduleId) {
         let modules = course.modules
         let module = modules.find(module => module.id === moduleId)
@@ -83,7 +78,7 @@ export default class CourseService {
     }
 
     createCourse(course) {
-        return fetch("https://wbdv-f19-khomchenko-server.herokuapp.com/api/courses", {
+        return fetch(this.localHost + "/api/courses", {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -94,7 +89,7 @@ export default class CourseService {
     }
 
     findCourseById(courseId) {
-        return fetch(`https://wbdv-f19-khomchenko-server.herokuapp.com/api/courses/${courseId}`)
+        return fetch(this.localHost + `/api/courses/${courseId}`)
             .then(response => response.json())
     }
 
@@ -105,7 +100,7 @@ export default class CourseService {
     }
 
     deleteCourse(courseId) {
-        return fetch(`https://wbdv-f19-khomchenko-server.herokuapp.com/api/courses/${courseId}`, {
+        return fetch(this.localHost + `/api/courses/${courseId}`, {
             method: 'DELETE'})
             .then(response => response.json())
     }
