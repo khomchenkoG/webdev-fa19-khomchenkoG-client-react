@@ -82,50 +82,47 @@ export default class LessonTabs extends React.Component {
 
 
     render() {
+        if (this.state.moduleId){
+            return (<div>
+                <ul className="nav nav-pills ">
+                    {
 
-        return (<div>
-            <ul className="nav nav-pills ">
-                {
 
+                        this.state.lessons.map(lesson => {
+                                let isActive = lesson.id === this.state.activeLesson;
+                                return (<li key={lesson.id}
+                                            className={isActive ? "nav-item active-lesson" : "nav-item lesson-tab"}>
+                                    <div class="form-inline">
+                                        <a className='nav-link'
+                                           href="#"
+                                           onClick={() => this.state.callBack(lesson.id)}>
+                                            {lesson.title}
+                                        </a>
+                                        <button
+                                            onClick={() => this.deleteLesson(lesson.id)}
+                                            className="btn"
+                                            style={{float: 'right'}}>
+                                            <FaTimes class="delete-btn"/></button>
+                                    </div>
 
-                    this.state.lessons.map(lesson => {
-                            let isActive = lesson.id === this.state.activeLesson;
-                            return (<li key={lesson.id}
-                                        className={isActive ? "nav-item active-lesson" : "nav-item lesson-tab"}>
-                                <div class="form-inline">
-                                    <a className='nav-link'
-                                       href="#"
-                                       onClick={() => this.state.callBack(lesson.id)}>
-                                        {lesson.title}
-                                    </a>
-                                    <button
-                                        onClick={() => this.deleteLesson(lesson.id)}
-                                        className="btn"
-                                        style={{float: 'right'}}>
-                                        <FaTimes class="delete-btn"/></button>
-                                </div>
+                                </li>)
 
-                            </li>)
-
-                        }
-                    )
-                }
-                <form className="form-inline create-lesson">
-                    <div className="form-group mx-sm-1 mb-2">
-                        <input onChange={this.updateInputField}
-                               value={this.state.newLesTitle}
-                               className="form-control take-full-width take-full-height" placeholder="New Lesson"/>
-                    </div>
-                    <button onClick={this.createLesson} type="submit" className="btn btn-primary mb-2">Create</button>
-                </form>
-            </ul>
-            {/*<TopicTabs*/}
-            {/*    lessonId={this.state.activeLesson}*/}
-            {/*    topics={this.state.topics}*/}
-            {/*    callBack={null}*/}
-            {/*    activeTopic={null}*/}
-            {/*/>*/}
-        </div>)
+                            }
+                        )
+                    }
+                    <form className="form-inline create-lesson">
+                        <div className="form-group mx-sm-1 mb-2">
+                            <input onChange={this.updateInputField}
+                                   value={this.state.newLesTitle}
+                                   className="form-control take-full-width take-full-height" placeholder="New Lesson"/>
+                        </div>
+                        <button onClick={this.createLesson} type="submit" className="btn btn-primary mb-2">Create</button>
+                    </form>
+                </ul>
+            </div>)
+        } else {
+            return null;
+        }
     }
 
 }

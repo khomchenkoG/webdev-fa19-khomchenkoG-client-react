@@ -32,23 +32,14 @@ export default class LessonTabs extends React.Component {
             });
     }
 
-    // async componentDidMount() {
-    //     let topics = await topicService.findAllTopics(this.state.lessonId)
-    //     let firstTopic;
-    //     if (this.state.activeTopic == null || this.state.activeTopic == null){
-    //         firstTopic = -1;
-    //         if (topics.length > 0){
-    //             firstTopic = topics[0].id
-    //         }
-    //     } else {
-    //         firstTopic = this.state.activeTopic;
-    //     }
-    //
-    //     this.setState({
-    //         topics: topics,
-    //         activeTopic: firstTopic,
-    //     })
-    // }
+    async componentDidMount(){
+
+        let topics = await topicService.findAllTopics(this.state.lessonId)
+
+        this.setState({
+            topics: topics
+        })
+    }
 
     createTopic() {
         topicService.createTopic(this.state.lessonId, this.state.newTopTitle).then(newTopics =>
@@ -74,43 +65,48 @@ export default class LessonTabs extends React.Component {
     }
 
     render() {
-        console.log("in topics I have: " + this.state.topics.length)
 
-    return (
-        <div>
-            <ul className="nav nav-pills">
-                {
+        if (this.state.lessonId){
+            return (
+                <div>
+                    <ul className="nav nav-pills">
+                        {
 
 
-                    this.state.topics.map(topic => {
-                        let isActive = topic.id === this.state.activeTopic
-                        return (<li key={topic.id} className= {isActive ? "active-topic" : " topic-tab"}>
-                            <div className="form-inline">
-                            <a className="nav-link topic-name"
-                               href="#"
-                               onClick = {this.state.callBack.bind(this, topic.id)}
-                            >
-                                {topic.title}
-                            </a>
-                                <button
-                                    onClick={() => this.deleteTopic(topic.id)}
-                                    className="btn"
-                                    style={{float: 'right'}}>
-                                    <FaTimes class="delete-btn"/></button>
+                            this.state.topics.map(topic => {
+                                let isActive = topic.id === this.state.activeTopic
+                                return (<li key={topic.id} className= {isActive ? "active-topic" : " topic-tab"}>
+                                    <div className="form-inline">
+                                        <a className="nav-link topic-name"
+                                           href="#"
+                                           onClick = {this.state.callBack.bind(this, topic.id)}
+                                        >
+                                            {topic.title}
+                                        </a>
+                                        <button
+                                            onClick={() => this.deleteTopic(topic.id)}
+                                            className="btn"
+                                            style={{float: 'right'}}>
+                                            <FaTimes class="delete-btn"/></button>
+                                    </div>
+                                </li>)
+                            } )
+                        }
+                        <form className="form-inline create-lesson">
+                            <div className="form-group mx-sm-1 mb-2">
+                                <input onChange={this.updateInputField}
+                                       value={this.state.newTopTitle}
+                                       className="form-control  take-full-height" placeholder="New Topic"/>
                             </div>
-                        </li>)
-                    } )
-                }
-                <form className="form-inline create-lesson">
-                    <div className="form-group mx-sm-1 mb-2">
-                        <input onChange={this.updateInputField}
-                               value={this.state.newTopTitle}
-                               className="form-control  take-full-height" placeholder="New Topic"/>
-                    </div>
-                    <button onClick={this.createTopic} type="submit" className="btn btn-primary mb-2">Create</button>
-                </form>
-            </ul>
-        </div>
+                            <button onClick={this.createTopic} type="submit" className="btn btn-primary mb-2">Create</button>
+                        </form>
+                    </ul>
+                </div>
 
-    )}
+            )
+        } else {
+            return null
+        }
+
+    }
 }

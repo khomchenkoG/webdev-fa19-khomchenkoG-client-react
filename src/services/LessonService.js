@@ -16,19 +16,19 @@ export default class LessonService {
     }
 
     findAllLessons(mid) {
-        return fetch(this.localHost + `/api/modules/${mid}/lessons`)
+        return fetch(this.herokuHost + `/api/modules/${mid}/lessons`)
             .then(response => response.json())
     }
 
     deleteLesson(mid, lid) {
-        return fetch(this.localHost + `/api/modules/${mid}/lessons/${lid}`, {
+        return fetch(this.herokuHost + `/api/modules/${mid}/lessons/${lid}`, {
             method: 'DELETE'
         })
             .then(response => response.json())
     }
 
     createLesson(mid, lesson) {
-        return fetch(this.localHost + `/api/modules/${mid}/lessons`, {
+        return fetch(this.herokuHost + `/api/modules/${mid}/lessons`, {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

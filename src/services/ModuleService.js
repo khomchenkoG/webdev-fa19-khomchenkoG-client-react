@@ -16,19 +16,19 @@ export default class ModuleService {
     }
 
     findAllModules(cid) {
-        return fetch(this.localHost + `/api/courses/${cid}/modules`)
+        return fetch(this.herokuHost + `/api/courses/${cid}/modules`)
             .then(response => response.json())
     }
 
     deleteModule(cid, mid) {
-        return fetch(this.localHost + `/api/courses/${cid}/modules/${mid}`, {
+        return fetch(this.herokuHost + `/api/courses/${cid}/modules/${mid}`, {
             method: 'DELETE'
         })
             .then(response => response.json())
     }
 
     createModule(cid, module) {
-        return fetch(this.localHost + `/api/courses/${cid}/modules`, {
+        return fetch(this.herokuHost + `/api/courses/${cid}/modules`, {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

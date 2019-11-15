@@ -16,19 +16,19 @@ export default class TopicService {
     }
 
     findAllTopics(lid) {
-        return fetch(this.localHost + `/api/lessons/${lid}/topics`)
+        return fetch(this.herokuHost + `/api/lessons/${lid}/topics`)
             .then(response => response.json())
     }
 
     deleteTopic(lid, tid) {
-        return fetch(this.localHost + `/api/lessons/${lid}/topics/${tid}`, {
+        return fetch(this.herokuHost + `/api/lessons/${lid}/topics/${tid}`, {
             method: 'DELETE'
         })
             .then(response => response.json())
     }
 
     createTopic(lid, topic) {
-        return fetch(this.localHost + `/api/lessons/${lid}/topics`, {
+        return fetch(this.herokuHost + `/api/lessons/${lid}/topics`, {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

@@ -20,7 +20,7 @@ export default class CourseService {
     }
 
     findAllCourses() {
-        return fetch(this.localHost +"/api/courses")
+        return fetch(this.herokuHost +"/api/courses")
             .then(response => response.json())
     }
 
@@ -78,7 +78,7 @@ export default class CourseService {
     }
 
     createCourse(course) {
-        return fetch(this.localHost + "/api/courses", {
+        return fetch(this.herokuHost + "/api/courses", {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -89,7 +89,7 @@ export default class CourseService {
     }
 
     findCourseById(courseId) {
-        return fetch(this.localHost + `/api/courses/${courseId}`)
+        return fetch(this.herokuHost + `/api/courses/${courseId}`)
             .then(response => response.json())
     }
 
@@ -100,7 +100,7 @@ export default class CourseService {
     }
 
     deleteCourse(courseId) {
-        return fetch(this.localHost + `/api/courses/${courseId}`, {
+        return fetch(this.herokuHost + `/api/courses/${courseId}`, {
             method: 'DELETE'})
             .then(response => response.json())
     }

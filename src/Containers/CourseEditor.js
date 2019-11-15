@@ -169,7 +169,8 @@ export default class CourseEditor
 
     }
 
-    lessonChanged = (curLessonId) => {
+    async lessonChanged (curLessonId) {
+        await this.updateCourse()
         this.findFirstTopic(this.state.moduleId, curLessonId).then(topicId =>
         this.setState(prevState => ({
             course: prevState.course,
@@ -179,7 +180,8 @@ export default class CourseEditor
         })))
     }
 
-    topicChanged = (curTopicId) => {
+    async topicChanged (curTopicId) {
+        await this.updateCourse()
         this.setState(prevState => ({
             course: prevState.course,
             moduleId: prevState.moduleId,
@@ -187,7 +189,6 @@ export default class CourseEditor
             topicId: curTopicId,
             widgetService: prevState.widgetService
         }))
-
     }
 
     setUpView() {

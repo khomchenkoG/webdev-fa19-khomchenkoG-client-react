@@ -23,14 +23,14 @@ export default class WidgetService {
     }
 
     async findWidget(topicId, widgetId){
-        return fetch(this.localHost + "/api/topics/" + topicId + "/widgets/" + widgetId)
+        return fetch(this.herokuHost + "/api/topics/" + topicId + "/widgets/" + widgetId)
             .then(response => response.json())
     }
 
 
 
     async findAllWidgets(topicId){
-        return fetch(this.localHost + "/api/topics/" + topicId + "/widgets")
+        return fetch(this.herokuHost + "/api/topics/" + topicId + "/widgets")
             .then(response => response.json())
 
     }
@@ -50,7 +50,7 @@ export default class WidgetService {
                     link_data: "",
                     ordered: true,
                 };
-        return fetch(this.localHost + "/api/topics/" + topicId + "/widgets", {
+        return fetch(this.herokuHost + "/api/topics/" + topicId + "/widgets", {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -61,7 +61,7 @@ export default class WidgetService {
     }
 
     updateWidget(topicId, widgetId, widget) {
-        return fetch(this.localHost + "/api/topics/" + topicId + "/widgets/"+ widgetId, {
+        return fetch(this.herokuHost + "/api/topics/" + topicId + "/widgets/"+ widgetId, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json'
@@ -72,7 +72,7 @@ export default class WidgetService {
     }
 
     saveAllWidgets(topicId, widgets) {
-        return fetch(this.localHost + "/api/topics/" + topicId + "/widgets", {
+        return fetch(this.herokuHost + "/api/topics/" + topicId + "/widgets", {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json'
@@ -83,7 +83,7 @@ export default class WidgetService {
     }
 
     deleteWidget(topicId, widgetId) {
-        return fetch(this.localHost + "/api/topics/" + topicId + "/widgets/"+ widgetId, {
+        return fetch(this.herokuHost + "/api/topics/" + topicId + "/widgets/"+ widgetId, {
             method: 'DELETE'})
             .then(response => response.json())
     }
